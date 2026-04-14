@@ -243,9 +243,7 @@
     <div class="video-modal" id="videoModal">
         <span class="close-modal" onclick="closeModal()">&times;</span>
         <div class="video-container">
-	    <iframe id="reelVideo" src="" data-src="https://player.vimeo.com/video/1012920211?h=0937c56434&title=0&byline=0&portrait=0&autoplay=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
-
-</iframe>
+	    <iframe id="reelVideo" src="" data-src="https://player.vimeo.com/video/1012920211?h=0937c56434&title=0&byline=0&portrait=0&autoplay=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>/iframe>
         </div>
     </div>
 
@@ -583,56 +581,73 @@
             document.getElementById('formMsg').placeholder = "Sua mensagem";
         }
 
-// ================= LÓGICA DO FORMULÁRIO (AJAX) =================
-const contactForm = document.getElementById("my-form");
+// ================= CONTROLE DO MODAL DE VÍDEO =================
+const vModal = document.getElementById('videoModal');
+const vIframe = document.getElementById('reelVideo');
+
+function openModal() {
+    if (vIframe && vModal) {
+        // Pega o link do data-src e coloca no src para dar play
+        const source = vIframe.getAttribute('data-src');
+        vIframe.src = source;
+        vModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal() {
+    if (vIframe && vModal) {
+        // Limpa o src para parar o áudio e fecha o modal
+        vIframe.src = "";
+        vModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Fecha se clicar fora do vídeo
+window.addEventListener('click', function(event) {
+    if (event.target == vModal) {
+        closeModal();
+    }
+});
+
+// ================= ENVIO DO FORMULÁRIO (AJAX) =================
+const contactForm = document.getElementById("contact-form");
 
 if (contactForm) {
-    contactForm.addEventListener("submit", async function(event) {
-        // Esta linha é a mais importante: ela impede o redirecionamento
-        event.preventDefault(); 
+    contactForm.addEventListener("submit", function(event) {
+        event.preventDefault(); // Impede o redirecionamento
         
-        const status = document.getElementById("form-status");
+        const status = document.getElementById("my-form-status");
         const btn = document.getElementById("submit-btn");
         const data = new FormData(event.target);
         
-        // Verifica se o site está em PT ou EN (usando a tua variável siteLang)
-        const isPT = (typeof siteLang !== 'undefined' && siteLang === 'pt');
-        const msgSuccess = isPT ? "Mensagem enviada com sucesso!" : "Message sent successfully!";
-        const msgError = isPT ? "Ops! Ocorreu um erro ao enviar." : "Oops! There was a problem submitting.";
-
         btn.disabled = true;
-        if (status) {
-            status.style.display = "block";
-            status.innerHTML = isPT ? "Enviando..." : "Sending...";
-            status.style.color = "var(--text-dark)";
-        }
+        status.innerHTML = "Enviando...";
 
         fetch(event.target.action, {
-    method: contactForm.method,
-    body: data,
-    headers: { 'Accept': 'application/json' }
-}).then(response => {
-    if (response.ok) {
-        status.innerHTML = "Mensagem enviada com sucesso!";
-        status.style.color = "green";
-        contactForm.reset();
-    } else {
-        // Isso vai te mostrar no console se o erro é 404 (ID errado), 
-        // 403 (domínio não autorizado) ou 429 (muitas tentativas)
-        response.json().then(data => {
-            console.error("Erro do Formspree:", data);
-            status.innerHTML = "Erro: " + (data.error || "Problema no servidor");
+            method: 'POST',
+            body: data,
+            headers: { 'Accept': 'application/json' }
+        }).then(response => {
+            if (response.ok) {
+                status.innerHTML = "Mensagem enviada com sucesso!";
+                status.style.color = "green";
+                contactForm.reset();
+            } else {
+                status.innerHTML = "Erro ao enviar. Verifique os dados.";
+                status.style.color = "red";
+            }
+            btn.disabled = false;
+        }).catch(error => {
+            status.innerHTML = "Erro de conexão.";
+            status.style.color = "red";
+            btn.disabled = false;
         });
-        status.style.color = "red";
-    }
-    btn.disabled = false;
-}).catch(error => {
-    console.error("Erro na requisição:", error);
-    status.innerHTML = "Erro de conexão.";
-    btn.disabled = false;
-});
     });
 }
+
+
         // ================= BANCO DE DADOS DOS PROJETOS (Bilingue) =================
         const projectsData = {
             'projeto1': {
@@ -724,32 +739,6 @@ if (contactForm) {
             }, 600);
         }
         setInterval(animateRandomWord, 2000);
-
-// ================= LÓGICA DO MODAL DO REEL =================
-const modal = document.getElementById('videoModal');
-const iframe = document.getElementById('reelVideo');
-const videoSrc = iframe.getAttribute('data-src');
-
-function openModal() {
-    // Ao abrir, injetamos o URL no src para o vídeo começar
-    iframe.src = videoSrc;
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Opcional: trava o scroll do site ao ver o vídeo
-}
-
-function closeModal() {
-    // Ao fechar, limpamos o src. Isso mata o processo do vídeo e o áudio para na hora
-    iframe.src = "";
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Devolve o scroll
-}
-
-// Fecha o modal se o usuário clicar fora do conteúdo do vídeo
-window.onclick = function(event) {
-    if (event.target == modal) {
-        closeModal();
-    }
-}
 });
 
         const showcaseItems = document.querySelectorAll('.showcase-item');
