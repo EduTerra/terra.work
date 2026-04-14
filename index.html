@@ -243,7 +243,9 @@
     <div class="video-modal" id="videoModal">
         <span class="close-modal" onclick="closeModal()">&times;</span>
         <div class="video-container">
-            <iframe id="reelVideo" src="https://player.vimeo.com/video/232535580?autoplay=1&muted=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+	    <iframe id="reelVideo" src="" data-src="https://player.vimeo.com/video/1012920211?h=0937c56434&title=0&byline=0&portrait=0&autoplay=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
+
+</iframe>
         </div>
     </div>
 
@@ -484,7 +486,7 @@
                 <h2 class="footer-title" data-i18n="ft-title">GET IN TOUCH</h2>
                 <p class="body-copy col-2-3" data-i18n="ft-desc">All great relationships start with a conversation.<br>Do you have a project in mind and would like my help? Let's chat!</p>
                 
-<form id="my-form" class="contact-form" action="https://formspree.io/f/mqaebrda" method="POST">
+<form id="my-form" class="contact-form" action="https://formspree.io/f/mpqkwbja" method="POST">
     <input type="email" name="email" id="formEmail" placeholder="Your email" required>
     <textarea name="message" id="formMsg" placeholder="Your message" required></textarea>
     <button type="submit" id="submit-btn" data-i18n="ft-btn">SEND</button>
@@ -724,36 +726,30 @@ if (contactForm) {
         setInterval(animateRandomWord, 2000);
 
 // ================= LÓGICA DO MODAL DO REEL =================
-function openModal() { 
-    const modal = document.getElementById('videoModal');
-    const iframe = document.getElementById('reelVideo');
-    
-    if (modal && iframe) {
-        modal.classList.add('active'); 
-        // Injetamos o link com o seu ID 232535580 e o comando de autoplay
-        iframe.src = "https://player.vimeo.com/video/232535580?autoplay=1&muted=0"; 
-        document.body.classList.add('modal-open');
-    }
+const modal = document.getElementById('videoModal');
+const iframe = document.getElementById('reelVideo');
+const videoSrc = iframe.getAttribute('data-src');
+
+function openModal() {
+    // Ao abrir, injetamos o URL no src para o vídeo começar
+    iframe.src = videoSrc;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Opcional: trava o scroll do site ao ver o vídeo
 }
 
-function closeModal() { 
-    const modal = document.getElementById('videoModal');
-    const iframe = document.getElementById('reelVideo');
-
-    if (modal && iframe) {
-        modal.classList.remove('active'); 
-        // Matamos o link do iframe. Isso encerra a conexão e para o áudio na hora.
-        iframe.src = ""; 
-        document.body.classList.remove('modal-open');
-    }
+function closeModal() {
+    // Ao fechar, limpamos o src. Isso mata o processo do vídeo e o áudio para na hora
+    iframe.src = "";
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto'; // Devolve o scroll
 }
 
-// Garante que o clique no fundo escuro também feche o modal e pare o som
-window.addEventListener('click', (event) => {
-    const modal = document.getElementById('videoModal');
-    if (event.target === modal) {
+// Fecha o modal se o usuário clicar fora do conteúdo do vídeo
+window.onclick = function(event) {
+    if (event.target == modal) {
         closeModal();
     }
+}
 });
 
         const showcaseItems = document.querySelectorAll('.showcase-item');
