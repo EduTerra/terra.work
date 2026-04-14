@@ -484,12 +484,13 @@
                 <h2 class="footer-title" data-i18n="ft-title">GET IN TOUCH</h2>
                 <p class="body-copy col-2-3" data-i18n="ft-desc">All great relationships start with a conversation.<br>Do you have a project in mind and would like my help? Let's chat!</p>
                 
-                <form class="contact-form" action="https://formspree.io/f/mpqkwbja" method="POST">
-                    <input type="email" name="email" id="formEmail" placeholder="Your email" required>
-                    <textarea name="message" id="formMsg" placeholder="Your message" required></textarea>
-                    <button type="submit" id="submit-btn" data-i18n="ft-btn">SEND</button>
-			<p id="form-status" style="margin-top: 1.5rem; font-weight: 400; font-size: 0.9rem; display: none;"></p>
-                </form>
+<form id="my-form" class="contact-form" action="https://formspree.io/f/mqaebrda" method="POST">
+    <input type="email" name="email" id="formEmail" placeholder="Your email" required>
+    <textarea name="message" id="formMsg" placeholder="Your message" required></textarea>
+    <button type="submit" id="submit-btn" data-i18n="ft-btn">SEND</button>
+    
+    <p id="form-status" style="margin-top: 1.5rem; font-weight: 400; font-size: 0.9rem; display: none;"></p>
+</form>
             </div>
         </div>
 
@@ -585,15 +586,16 @@ const contactForm = document.getElementById("my-form");
 
 if (contactForm) {
     contactForm.addEventListener("submit", async function(event) {
-        event.preventDefault(); // ISTO impede o redirecionamento
+        // Esta linha é a mais importante: ela impede o redirecionamento
+        event.preventDefault(); 
         
         const status = document.getElementById("form-status");
         const btn = document.getElementById("submit-btn");
         const data = new FormData(event.target);
         
-        // Mensagens baseadas na variável siteLang que você já tem no seu código
+        // Verifica se o site está em PT ou EN (usando a tua variável siteLang)
         const isPT = (typeof siteLang !== 'undefined' && siteLang === 'pt');
-        const msgSuccess = isPT ? "Mensagem enviada! Entrarei em contato em breve." : "Message sent! I'll get back to you soon.";
+        const msgSuccess = isPT ? "Mensagem enviada com sucesso!" : "Message sent successfully!";
         const msgError = isPT ? "Ops! Ocorreu um erro ao enviar." : "Oops! There was a problem submitting.";
 
         btn.disabled = true;
@@ -630,7 +632,6 @@ if (contactForm) {
         });
     });
 }
-
         // ================= BANCO DE DADOS DOS PROJETOS (Bilingue) =================
         const projectsData = {
             'projeto1': {
