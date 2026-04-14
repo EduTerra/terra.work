@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>TERRA.WORK | Edu Terrataca</title>
+    <meta name="description" content="Portfolio of Edu Terrataca - Art Direction, Motion Design, 3D Designer and Video Editor.">
+    <meta property="og:title" content="TERRA.WORK | Edu Terrataca">
+    <meta property="og:description" content="Design and Motion Portfolio.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://terra.work">
+
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ================= VARIABLES & RESET ================= */
+        :root {
+            --bg-light: #e6e6e6; 
+            --bg-dark: #222222; 
+            --bg-mid: #d1d1d1;
+            --text-dark: #111111;
+            --text-light: #ffffff;
+            --font-hero: clamp(2.5rem, 6vw, 6.1rem); 
+            --font-title: clamp(2.5rem, 4vw, 3.75rem); 
+            --font-body: clamp(1rem, 1.5vw, 1.5rem); 
+            --font-service-title: 2rem;
+            --header-height: 110px; 
+        }
+
+        html { scroll-behavior: smooth; }
+        html, body { overflow-x: hidden; width: 100%; }
+        body.modal-open { overflow: hidden; } 
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Lato', sans-serif; font-weight: 700; background-color: var(--bg-light); color: var(--text-dark); }
+        a { text-decoration: none; color: inherit; transition: opacity 0.3s; }
+        a:hover { opacity: 0.7; }
+        img, video { max-width: 100%; display: block; }
+        
+        .container { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 5%; }
+        .col-2-3 { max-width: 66.66%; }
+        .body-copy { font-weight: 400; font-size: 1.2rem; line-height: 1.5; margin-bottom: 2rem; }
+
+        /* ================= HEADER ================= */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 5%;
+            height: var(--header-height); position: relative; z-index: 10; 
+        }
+        .logo { font-size: 2.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        nav { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+        .btn-contact { background: var(--text-dark); color: var(--text-light); padding: 0.5rem 1.5rem; border-radius: 50px; }
+
+        /* ================= HERO SECTION ================= */
+        .hero { 
+            min-height: calc(100vh - var(--header-height)); 
+            display: flex; flex-direction: column; justify-content: center; 
+            position: relative; padding: 2rem 0; 
+        }
+        .hero-title { font-size: var(--font-hero); line-height: 1.1; text-transform: uppercase; max-width: 1200px; z-index: 2; position: relative; }
+        .mask { display: inline-block; overflow: hidden; vertical-align: bottom; }
+        .anim-word { display: inline-block; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .slide-up-out { transform: translateY(-100%); }
+        .slide-down-hidden { transform: translateY(100%); transition: none; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.3; pointer-events: none; }
+
+        /* ================= PLAY REEL SECTION ================= */
+        .play-reel-section { position: relative; height: 60vh; background: #000; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .play-reel-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 1; transition: opacity 0.3s; }
+        .play-btn { position: relative; z-index: 2; color: #fff; font-size: var(--font-title); display: flex; align-items: center; gap: 1rem; }
+        .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; }
+        .video-modal.active { display: flex; }
+        .close-modal { position: absolute; top: 2rem; right: 3rem; color: white; font-size: 3rem; cursor: pointer; }
+        .video-container { width: 80%; max-width: 1200px; aspect-ratio: 16/9; }
+        .video-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* ================= WHAT I DO ================= */
+        .what-i-do { padding: 5rem 0; }
+        .section-title { font-size: var(--font-title); text-transform: uppercase; margin-bottom: 2rem; line-height: 1.1; }
+        .carousel-wrapper { overflow: hidden; position: relative; padding: 1rem 0; }
+        .carousel-track { display: flex; gap: 2rem; transition: transform 0.5s ease-in-out; }
+        .service-card { background: transparent; padding: 1rem 1rem; border: 1px solid rgba(0, 0, 0, 0.2); min-width: calc((100% - 8rem) / 5); }
+        .service-card img { width: 60px; margin-bottom: 1.5rem; }
+        .service-card h3 { font-size: var(--font-service-title); margin-bottom: 1rem; }
+        .service-card p { font-size: 1.2rem; font-weight: 400; color: #444; }
+        .carousel-controls { display: none; gap: 1rem; margin-top: 3rem; }
+        .control-btn { width: 50px; height: 50px; background: none; border: 1px solid var(--text-dark); cursor: pointer; font-size: 1.5rem; align-items: center; justify-content: center; transition: all 0.3s; }
+        @media (max-width: 1439px) { .service-card { min-width: calc((100% - 4rem) / 3); } .carousel-controls { display: flex; } }
+        @media (max-width: 1023px) { .service-card { min-width: 100%; } }
+
+	/* ================= AROUND THE WORLD ================= */
+        .around-world { position: relative; padding: 3rem 0; overflow: hidden; display: flex; align-items: center;  margin-bottom: 3rem; }
+        .around-bg { position: absolute; top: 50%; left: 50%; transform: translate(-30%, -50%); width: 50%; max-width: 600px; z-index: 1; opacity: 0.6; pointer-events: none; object-fit: contain; }
+        .around-content { position: relative; z-index: 2; }
+
+        /* ================= SHOWCASE ================= */
+        .showcase-section { background: var(--bg-dark); color: var(--text-light); padding: 6rem 0; }
+        .showcase-grid { display: flex; flex-direction: column; width: 100%; }
+        .showcase-item { width: 100%; height: 200px; object-fit: cover; filter: grayscale(100%); transition: filter 0.6s ease; cursor: pointer; }
+        .showcase-item:hover, .showcase-item.in-view { filter: grayscale(0%); }
+        .showcase-button { 
+            background: white; color: black; border: none; padding: 1rem 2.5rem; 
+            border-radius: 50px; cursor: pointer; font-weight: bold; width: fit-content; }
+
+        /* ================= CASE STUDY MODAL ================= */
+        .case-study-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--bg-dark); color: var(--text-light); z-index: 10000; 
+            overflow-y: auto; overflow-x: hidden; opacity: 0; transform: translateY(50px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            overscroll-behavior: contain; 
+        }
+        .case-study-modal.active { display: block; opacity: 1; transform: translateY(0); }
+        
+        .cs-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 2rem 5%; width: 100%; max-width: 1440px; margin: 0 auto;
+            position: sticky; top: 0; background: rgba(34, 34, 34, 0.95); backdrop-filter: blur(5px); z-index: 20;
+        }
+        .cs-title { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .cs-close { font-size: 1.2rem; cursor: pointer; font-weight: bold; padding: 0.5rem 1rem; border: 1px solid white; border-radius: 50px; transition: 0.3s; }
+        .cs-close:hover { background: white; color: black; }
+
+        .cs-video-container { width: 100%; aspect-ratio: 16/9; background: #000; margin-bottom: 4rem; display: none; }
+        .cs-video-container iframe { width: 100%; height: 100%; border: none; }
+
+        .cs-content-grid { display: flex; flex-wrap: wrap; gap: 4rem; margin-bottom: 6rem; margin-top: 4rem; }
+        .cs-main-desc { flex: 2; min-width: 300px; }
+        .cs-main-desc h2 { font-size: var(--font-title); margin-bottom: 1.5rem; line-height: 1.1; }
+        .cs-main-desc p { font-size: 1.2rem; line-height: 1.6; font-weight: 400; color: #ccc; margin-bottom: 1.5rem; }
+        
+        .cs-sidebar { flex: 1; min-width: 250px; }
+        .cs-meta-block { margin-bottom: 2rem; border-top: 1px solid #444; padding-top: 1rem; }
+        .cs-meta-block h4 { font-size: 1rem; text-transform: uppercase; color: #888; margin-bottom: 0.5rem; letter-spacing: 1px; }
+        .cs-meta-block p { font-size: 1.2rem; font-weight: 700; line-height: 1.4; }
+
+        .cs-gallery { display: flex; flex-direction: column; gap: 2rem; padding-bottom: 8rem; }
+        .cs-gallery img { width: 100%; height: auto; border-radius: 4px; }
+
+        /* ================= TOOLS ================= */
+        .tools-wrapper { background-color: var(--bg-mid); padding: 4rem 0; }
+        .tools-list { font-size: var(--font-service-title); line-height: 1.4; text-transform: uppercase; margin-top: 1rem; }
+
+        /* ================= EXPERIENCE ================= */
+        .experience { padding: 4rem 0; }
+        .brands-header { font-size: var(--font-service-title); margin-bottom: 1rem; text-transform: uppercase; }
+        .brands-list { font-size: var(--font-service-title); line-height: 1.4; text-transform: uppercase; margin-bottom: 4rem; margin-top: 1rem; }
+        .timeline-item { margin-top: 3rem; border-bottom: 1px solid #ccc; padding-bottom: 2rem; }
+        .timeline-item h4 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .timeline-item span { display: block; color: #666; margin-bottom: 1rem; font-weight: 400; }
+
+        /* ================= HONORS & AWARDS ================= */
+        .honors-awards { padding: 4rem 0 8rem; }
+        .award-item { display: flex; border-bottom: 1px solid #ccc; padding: 2rem 0; gap: 4rem; }
+        .award-year { font-size: 1.5rem; font-weight: 700; min-width: 100px; }
+        .award-details h4 { font-size: 2rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .award-details span { display: block; font-weight: 700; color: #555; margin-bottom: 0.5rem; }
+        .award-details p { font-weight: 400; color: #666; line-height: 1.4; }
+
+        /* ================= FOOTER ================= */
+        footer { padding: 0; background: var(--bg-light); display: flex; flex-direction: column; gap: 5px; }
+        .footer-block { background: var(--bg-dark); color: var(--text-light); padding: 5rem 0; width: 100%; }
+        .footer-title { font-size: var(--font-title); margin-bottom: 1rem; }
+        
+        .contact-form { display: flex; flex-direction: column; max-width: 600px; margin: 3rem 0 1rem; gap: 2rem; }
+        .contact-form input, .contact-form textarea { 
+            background: transparent; border: none; border-bottom: 2px solid #555; 
+            color: white; font-size: 1.2rem; outline: none; font-family: 'Lato', sans-serif; 
+            padding: 0.5rem 0; transition: border-color 0.3s;
+        }
+        .contact-form textarea { min-height: 100px; resize: none; }
+        .contact-form input:focus, .contact-form textarea:focus { border-color: white; }
+        .contact-form button { 
+            background: white; color: black; border: none; padding: 1rem 2.5rem; 
+            border-radius: 50px; cursor: pointer; font-weight: bold; width: fit-content; margin-top: 1rem;
+        }
+
+        .footer-bottom-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
+        .services-list h3, .socials h3 { font-size: var(--font-service-title); margin-bottom: 1.5rem; text-transform: uppercase; }
+        .services-list ul { list-style: none; font-weight: 400; line-height: 1.5; font-size: 1.2rem; }
+        .social-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .social-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; font-weight: 400; font-size: 1rem; }
+        .social-item img { width: 40px; height: 40px; object-fit: contain;}
+        .footer-logo { font-size: 1.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-top: 4rem; width: 100%; text-align: left; }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 1.5rem; }
+            .col-2-3 { max-width: 100%; }
+            .what-i-do, .tools-wrapper, .experience, .honors-awards { padding: 6rem 0; }
+            .section-title { font-size: 2.8rem; margin-bottom: 3rem; }
+            header { height: auto; flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 2rem 1.5rem; }
+            .hero { min-height: 80vh; padding: 2rem 0 4rem; } 
+            .hero-title { font-size: 3rem; }
+            .showcase-item { height: 250px; }
+            .award-item { flex-direction: column; padding: 3rem 0; gap: 1rem; }
+            .footer-block { padding: 4rem 0; }
+            .footer-bottom-grid { flex-direction: column; gap: 4rem; }
+            .cs-content-grid { flex-direction: column; gap: 3rem; margin-top: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">TERRA.WORK</div>
+        <nav>
+            <a href="#reel" data-i18n="menu-reel">Reel</a>
+            <a href="#services" data-i18n="menu-services">Services</a>
+            <a href="#showcase" data-i18n="menu-showcase">Showcase</a>
+            <a href="#experience" data-i18n="menu-experience">Experience</a>
+            <a href="#contact" class="btn-contact" data-i18n="menu-contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <img src="images/BG-20-Years.png" alt="Background" class="hero-bg">
+        <div class="container">
+            <h1 class="hero-title" data-i18n="hero-title">
+                OVER<br>
+                <span class="mask"><span class="anim-word">20</span></span> 
+                <span class="mask"><span class="anim-word">YEARS</span></span><br>
+		
+                <span class="mask"><span class="anim-word">BRINGING</span></span> 
+                <span class="mask"><span class="anim-word">IDEAS</span></span><br>
+                AND STORIES<br>
+                TO LIFE<br>
+                THROUGH <span class="mask"><span class="anim-word">DESIGN</span></span><br>
+                AND <span class="mask"><span class="anim-word">MOTION.</span></span>
+            </h1>
+        </div>
+    </section>
+
+    <section class="play-reel-section" id="reel" onclick="openModal()">
+        <video class="play-reel-bg" autoplay loop muted playsinline>
+            <source src="videos/Video-Hero-TerraWork.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn" data-i18n="btn-play">PLAY REEL ▶</div>
+    </section>
+
+    <div class="video-modal" id="videoModal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="video-container">
+            <iframe id="reelVideo" src="https://player.vimeo.com/video/SUA-ID-AQUI?background=0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <section class="what-i-do" id="services">
+        <div class="container">
+            <p class="body-copy col-2-3" style="margin-bottom: 4rem;" data-i18n="what-desc">Hi, I'm Eduardo Terrataca, a creative professional focused on creating videos, I seek excellence in craft, utilizing technology and expertise to spend less time on repetitive tasks and more time experimenting and creating.</p>
+            <h2 class="section-title" data-i18n="what-title">WHAT I DO</h2>
+            <p class="body-copy col-2-3" data-i18n="what-sub">I work with brands, studios and agencies, big and small, on a broad range of design services, such as:</p>
+            
+            <div class="carousel-wrapper">
+                <div class="carousel-track" id="track">
+                    <div class="service-card">
+                        <img src="images/icon-art.png" alt="Art">
+                        <h3 data-i18n="srv-art-title">ART DIRECTION</h3>
+                        <p data-i18n="srv-art-desc">From concept sketches to final stylistic execution across all touchpoints.</p>
+                    </div>
+                    <div class="service-card">
+                        <img src="images/icon-motion.png" alt="Motion">
+                        <h3 data-i18n="srv-mot-title">MOTION DESIGN</h3>
+                        <p data-i18n="srv-mot-desc">Create purposeful movement that communicates ideas instantly.</p>
+                    </div>
+                    <div class="service-card">
+                        <img src="images/icon-video.png" alt="Video">
+                        <h3 data-i18n="srv-vid-title">VIDEO EDITING</h3>
+                        <p data-i18n="srv-vid-desc">Material selection, color grading, choose an edit pacing that fits the story.</p>
+                    </div>
+                    <div class="service-card">
+                        <img src="images/icon-3d.png" alt="3D">
+                        <h3 data-i18n="srv-3d-title">3D DESIGN</h3>
+                        <p data-i18n="srv-3d-desc">Modeling, texturing and lighting environments and products.</p>
+                    </div>
+                    <div class="service-card">
+                        <img src="images/icon-sound.png" alt="Sound">
+                        <h3 data-i18n="srv-snd-title">SOUND DESIGN</h3>
+                        <p data-i18n="srv-snd-desc">Enhancing visuals with appropriate soundscapes and audio mixing.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="control-btn" onclick="moveCarousel(-1)">❮</button>
+                <button class="control-btn" onclick="moveCarousel(1)">❯</button>
+            </div>
+        </div>
+    </section>
+
+<section class="around-world">
+        <img src="images/bg-around-the-world.png" alt="World Map" class="around-bg">
+        <div class="container around-content">
+            <h2 class="section-title" data-i18n="around-title">AROUND<br>THE WORLD</h2>
+            <p class="body-copy col-2-3" style="margin-bottom: 0;" data-i18n="around-desc">Working remotely, I've had the opportunity to participate on projects around the world. I also sell assets in stock libraries, where they're used by people globally. Knowing that my work reaches people worldwide makes me very proud.</p>
+        </div>
+    </section>
+
+    <section class="showcase-section" id="showcase">
+        <div class="container">
+            <h2 class="section-title" data-i18n="showcase-title">SHOWCASE</h2>
+        </div>
+        <div class="showcase-grid">
+            <img src="images/projeto1.png" alt="Projeto 1" class="showcase-item" loading="lazy" onclick="openCaseStudy('projeto1')">
+            <img src="images/projeto2.png" alt="Projeto 2" class="showcase-item" loading="lazy" onclick="openCaseStudy('projeto2')">
+            <img src="images/projeto3.png" alt="Projeto 3" class="showcase-item" loading="lazy" onclick="openCaseStudy('projeto3')">
+            <img src="images/projeto4.png" alt="Projeto 4" class="showcase-item" loading="lazy" onclick="openCaseStudy('projeto4')">
+        </div>
+       <div class="container">
+            </br>
+		<p class="body-copy col-2-3" style="margin-bottom: 0;" data-i18n="showcase-socials">A small showcase space is not enough to display 20 years of work. If you are interested in seeing more of my work, you can check out my social media accounts.</p>
+	</br>
+	<button type="submit" class="showcase-button" data-i18n="showcase-btn">SOCIALS</button>
+        </div>
+
+    </section>
+
+    <div class="case-study-modal" id="caseStudyModal">
+        <div class="cs-header">
+            <div class="cs-title" id="csTitle">PROJECT NAME</div>
+            <div class="cs-close" onclick="closeCaseStudy()" data-i18n="cs-close">CLOSE ✕</div>
+        </div>
+        
+        <div class="cs-video-container" id="csVideoContainer">
+            <iframe id="csVideo" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+
+        <div class="container">
+            <div class="cs-content-grid">
+                <div class="cs-main-desc">
+                    <h2 data-i18n="cs-challenge">THE CHALLENGE & PROCESS</h2>
+                    <div id="csDescription">
+                        </div>
+                </div>
+                <div class="cs-sidebar">
+                    <div class="cs-meta-block">
+                        <h4 data-i18n="cs-client">CLIENT</h4>
+                        <p id="csClient">Client Name</p>
+                    </div>
+                    <div class="cs-meta-block">
+                        <h4 data-i18n="cs-role">ROLE</h4>
+                        <p id="csRole">Art Direction, Motion Design</p>
+                    </div>
+                    <div class="cs-meta-block">
+                        <h4 data-i18n="cs-tools">TOOLS</h4>
+                        <p id="csTools">Photoshop, After Effects, C4D</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cs-gallery" id="csGallery">
+                </div>
+        </div>
+    </div>
+
+    <section class="tools-wrapper" id="tools">
+        <div class="container">
+            <h2 class="section-title" data-i18n="tools-title">TOOLS</h2>
+            <p class="body-copy col-2-3" style="margin-bottom: 0;" data-i18n="tools-desc">Tools come and go, so I'm constantly exploring new tools to improve my work, but these are the ones that I use most often:</p>
+            <div class="tools-list col-2-3">
+                PHOTOSHOP • AFTER EFFECTS • PREMIERE • ILLUSTRATOR • BLENDER • GENERATIVE AI
+            </div>
+        </div>
+    </section>
+
+    <section class="experience" id="experience">
+        <div class="container">
+            <h2 class="section-title" data-i18n="exp-title">EXPERIENCE</h2>
+            <h3 class="brands-header" data-i18n="exp-brands">BRANDS</h3>
+            <p class="body-copy col-2-3" style="margin-bottom: 1rem;" data-i18n="exp-brands-desc">Here's a selection of brands I've had the oportunity of working with:</p>
+            <div class="brands-list col-2-3">
+                COCA-COLA • J&J • SONY • NUTELLA • PIZZA HUT • UBER • GOOGLE • VIVO • SOMPO • MERCADO LIVRE • PURAVIDA • GAMESCOM • OMELETE • CCXP • PORTO SEGURO
+            </div>
+
+            <div class="timeline-item col-2-3">
+                <h4>TERA.WORK</h4>
+                <span data-i18n="date-present">Jan 2018 - Present</span>
+                <p class="body-copy" style="margin-bottom: 0;" data-i18n="exp-1">As a freelancer, I work on projects for leading companies, studios, and agencies, including Puravida, Nestlé Health Science, Omelete, CCXP, Gamescom, Africa, Cappuccino, E/OR MRM, McKinsey & Company. Focused on motion-driven digital work, I also develop 3D assets, visual systems, and illustration to support broader creative direction.</p>
+            </div>
+
+            <div class="timeline-item col-2-3">
+                <h4>REF+</h4>
+                <span data-i18n="date-ref">Sep 2016 - Mar 2020</span>
+                <p class="body-copy" style="margin-bottom: 0;" data-i18n="exp-2">I worked as a Motion Designer, producing content across a wide range of media, including social platforms, digital advertising (banners, bumpers, TrueView ads), out-of-home (OOH), and broadcast TV. I also contributed 3D assets for art direction, and worked on video and audio editing.</p>
+            </div>
+
+            <div class="timeline-item col-2-3">
+                <h4>SAPIENT NITRO</h4>
+                <span data-i18n="date-sap">Jan 2013 - Jul 2016</span>
+                <p class="body-copy" style="margin-bottom: 0;" data-i18n="exp-3">SapientNitro is now part of the Publicis Group and currently operates in the Brazilian market as SapientAG2. As part of a multinational organization, I collaborated with international clients, creating across multiple formats, from digital and social to broadcast and OOH, UX prototypes, digital advertisements, assets for commercials and pitch content.</p>
+            </div>
+
+            <div class="timeline-item col-2-3">
+                <h4 data-i18n="exp-other">OTHER EXPERIENCES</h4>
+                <span data-i18n="date-other">Before 2013</span>
+                <p class="body-copy" style="margin-bottom: 0;" data-i18n="exp-4">In addition to the roles listed above, I also worked with other studios and agencies. I began my career as an Art Director and gradually transitioned into Motion Design, occasionally taking on responsibilities in Flash and HTML development, as well as final artwork production, areas that are no longer part of my current focus.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="honors-awards">
+        <div class="container">
+            <h2 class="section-title" data-i18n="honors-title">HONORS<br>& AWARDS</h2>
+            <p class="body-copy col-2-3" style="margin-bottom: 4rem;" data-i18n="honors-desc">Throughout my career, I've collaborated with highly talented creatives, exchanging knowledge and contributing to collaborative environments that led to award-winning work.</p>
+            
+            <div class="award-item col-2-3">
+                <div class="award-year">2022</div>
+                <div class="award-details">
+                    <h4>THE BLANK POST</h4>
+                    <span data-i18n="aw-1">Associated with Daniel Portuga as a Motion Designer</span>
+                    <p>W3 Awards NY - Silver / W3 Awards NY Social Content & Marketing - Best in Show / Creativepool Annual - Shortlist / Anthem Awards - Bronze / Webby Awards - Official Honoree</p>
+                </div>
+            </div>
+
+            <div class="award-item col-2-3">
+                <div class="award-year">2017</div>
+                <div class="award-details">
+                    <h4>NAPSTER - THE ROCK'S DAY</h4>
+                    <span data-i18n="aw-2">At SapientNitro as an Art Director</span>
+                    <p>Lusos Awards / Shotlist</p>
+                </div>
+            </div>
+
+            <div class="award-item col-2-3">
+                <div class="award-year">2016</div>
+                <div class="award-details">
+                    <h4>PHILADELPHIA - PIZZA ROULETTE</h4>
+                    <span data-i18n="aw-3">At SapientNitro as a Motion Designer.</span>
+                    <p>Lusos Awards - Digital - Bronze / Lusos Awards - Social Media - Shortlist / Creativity International Media Awards - Silver / W3 Awards NY - Gold</p>
+                </div>
+            </div>
+
+            <div class="award-item col-2-3">
+                <div class="award-year">2016</div>
+                <div class="award-details">
+                    <h4>PHILADELPHIA - THE SOCIAL CHEESECAKE</h4>
+                    <span data-i18n="aw-4">At SapientNitro as a Motion Designer.</span>
+                    <p>Lusos Awards - Best of Media - Gold / Lusos Awards - Digital - Bronze / Communicator Awards - Award of Excellence / Internet Advertising Competition - Best Food Social Media Campaign</p>
+                </div>
+            </div>
+
+            <div class="award-item col-2-3">
+                <div class="award-year">2013</div>
+                <div class="award-details">
+                    <h4>VIVO - POST-SHIRT</h4>
+                    <span data-i18n="aw-5">At iThink as a Motion Designer and Art Director.</span>
+                    <p>Pororoca – Best Innovation Initiative – Bronze</p>
+                </div>
+            </div>
+
+            <div class="award-item col-2-3">
+                <div class="award-year">2011</div>
+                <div class="award-details">
+                    <h4>SANTANDER - CONEXOES DE IDEIAS</h4>
+                    <span data-i18n="aw-6">At iThink as a Motion Designer and Video Editor.</span>
+                    <p>Premio Aberje 2011 - Midia Digital - Shortlist</p>
+                </div>
+            </div>
+
+            <div class="award-item col-2-3">
+                <div class="award-year">2010</div>
+                <div class="award-details">
+                    <h4>TELEFONICA - ULTIMATE ID CHAMPIONSHIP</h4>
+                    <span data-i18n="aw-7">At iThink as a Motion Designer and Art Director.</span>
+                    <p>Wave Festival - Shortlist / El Ojo - Bronze / Clube de Criação (CCSP) - Silver</p>
+                </div>
+            </div>
+
+            <div class="award-item col-2-3">
+                <div class="award-year">2007</div>
+                <div class="award-details">
+                    <h4>PERSONAL PORTFOLIO</h4>
+                    <span data-i18n="aw-8">As a Motion Designer, Art Director and Flash Developer.</span>
+                    <p>SF Art & Design Portal - Featured Site</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-block">
+            <div class="container">
+                <h2 class="footer-title" data-i18n="ft-title">GET IN TOUCH</h2>
+                <p class="body-copy col-2-3" data-i18n="ft-desc">All great relationships start with a conversation.<br>Do you have a project in mind and would like my help? Let's chat!</p>
+                
+                <form class="contact-form" action="https://formspree.io/f/SEU_ID_AQUI" method="POST">
+                    <input type="email" name="email" id="formEmail" placeholder="Your email" required>
+                    <textarea name="message" id="formMsg" placeholder="Your message" required></textarea>
+                    <button type="submit" data-i18n="ft-btn">SEND</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-block">
+            <div class="container footer-bottom-grid">
+                <div class="services-list">
+                    <h3 data-i18n="ft-srv-title">SERVICES</h3>
+                    <ul>
+                        <li data-i18n="ft-srv-1">Art Direction</li>
+                        <li data-i18n="ft-srv-2">Motion Design</li>
+                        <li data-i18n="ft-srv-3">Video Editing</li>
+                        <li data-i18n="ft-srv-4">3D Design</li>
+                        <li data-i18n="ft-srv-5">Sound Design</li>
+                    </ul>
+                </div>
+                <div class="socials">
+                    <h3>SOCIALS</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-item">
+                            <img src="images/icon-vimeo.png" alt="Vimeo">
+                            Vimeo
+                        </a>
+                        <a href="#" class="social-item">
+                            <img src="images/icon-linkedin.png" alt="LinkedIn">
+                            LinkedIn
+                        </a>
+                        <a href="#" class="social-item">
+                            <img src="images/icon-behance.png" alt="Behance">
+                            Behance
+                        </a>
+                        <a href="#" class="social-item">
+                            <img src="images/icon-instagram.png" alt="Instagram">
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-logo">TERRA.WORK</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ================= SISTEMA DE IDIOMAS (i18n) =================
+        let siteLang = 'en'; // Default
+        const userLang = navigator.language || navigator.userLanguage;
+        if (userLang.toLowerCase().startsWith('pt')) {
+            siteLang = 'pt';
+        }
+
+        const translations = {
+            'pt': {
+                'menu-reel': 'Reel', 'menu-services': 'Serviços', 'menu-showcase': 'Portfólio', 'menu-experience': 'Experiência', 'menu-contact': 'Contato',
+                'hero-title': `MAIS DE<br><span class="mask"><span class="anim-word">20</span></span> <span class="mask"><span class="anim-word">ANOS</span></span><br><span class="mask"><span class="anim-word">DANDO</span></span> <span class="mask"><span class="anim-word">VIDA</span></span><br>A IDEIAS<br>E HISTÓRIAS<br>COM <span class="mask"><span class="anim-word">DESIGN</span></span><br>E <span class="mask"><span class="anim-word">MOTION.</span></span>`,
+                'btn-play': 'ASSISTIR REEL ▶',
+                'what-desc': 'Olá, me chamo Eduardo Terrataca, sou um profissional criativo focado na criação de vídeos. Busco a excelência no craft, utilizando tecnologia e experiência para gastar menos tempo em tarefas repetitivas e mais tempo experimentando e criando.',
+                'what-title': 'O QUE EU FAÇO', 'what-sub': 'Trabalho com marcas, estúdios e agências, grandes e pequenos, em uma ampla gama de serviços de design, como:',
+                'srv-art-title': 'DIREÇÃO DE ARTE', 'srv-art-desc': 'De rascunhos de conceito à execução estilística final em todos os pontos de contato.',
+                'srv-mot-title': 'MOTION DESIGN', 'srv-mot-desc': 'Criar movimento com propósito que comunica ideias instantaneamente.',
+                'srv-vid-title': 'EDIÇÃO DE VÍDEO', 'srv-vid-desc': 'Seleção de material, color grading, escolha de um ritmo de edição que se encaixe na história.',
+                'srv-3d-title': 'DESIGN 3D', 'srv-3d-desc': 'Modelagem, texturização e iluminação de ambientes e produtos.',
+                'srv-snd-title': 'DESIGN DE SOM', 'srv-snd-desc': 'Melhorando o visual com paisagens sonoras apropriadas e mixagem de áudio.',
+                'showcase-title': 'PORTFÓLIO', 'showcase-socials': 'Um pequeno espaço de showcase é pouco para colocar 20 anos de trabalho, caso tenha interesse em ver mais outros trabalhos realizados você pode dar uma olhada nas minhas redes sociais',
+		'showcase-btn': 'REDES SOCIAIS',
+		'around-title': 'PELO<br>MUNDO', 
+                'around-desc': 'Trabalhando remotamente, tive a oportunidade de participar de projetos ao redor do mundo. Também vendo assets em bibliotecas de stock, onde são usados por pessoas globalmente. Saber que meu trabalho alcança pessoas no mundo todo me deixa muito orgulhoso.',
+                'cs-close': 'FECHAR ✕', 'cs-challenge': 'O DESAFIO E PROCESSO', 'cs-client': 'CLIENTE', 'cs-role': 'PAPEL', 'cs-tools': 'FERRAMENTAS',
+                'tools-title': 'FERRAMENTAS', 'tools-desc': 'Ferramentas vêm e vão, então estou constantemente explorando novas para melhorar meu trabalho, mas estas são as que uso com mais frequência:',
+                'exp-title': 'EXPERIÊNCIA', 'exp-brands': 'MARCAS', 'exp-brands-desc': 'Aqui está uma seleção de marcas com as quais tive a oportunidade de trabalhar:',
+                'date-present': 'Jan 2018 - Presente', 'date-ref': 'Set 2016 - Mar 2020', 'date-sap': 'Jan 2013 - Jul 2016', 'exp-other': 'OUTRAS EXPERIÊNCIAS', 'date-other': 'Antes de 2013',
+                'exp-1': 'Como freelancer, trabalho em projetos para empresas líderes, estúdios e agências, incluindo Puravida, Nestlé, Omelete, CCXP, Gamescom, Africa e McKinsey. Focado em trabalho digital voltado para motion, também desenvolvo assets 3D, sistemas visuais e ilustrações para apoiar a direção criativa de forma ampla.',
+                'exp-2': 'Trabalhei como Motion Designer, produzindo conteúdo em uma ampla gama de mídias, incluindo plataformas sociais, publicidade digital (banners, bumpers, TrueView), out-of-home (OOH) e TV. Também contribuí com assets 3D para direção de arte e trabalhei em edição de vídeo e áudio.',
+                'exp-3': 'Como parte de uma organização multinacional, colaborei com clientes internacionais criando em múltiplos formatos, do digital ao social, TV e OOH, protótipos de UX, campanhas e conteúdo para concorrências.',
+                'exp-4': 'Além das funções acima, também trabalhei com outros estúdios e agências. Comecei minha carreira como Diretor de Arte e gradualmente fiz a transição para o Motion Design, áreas que não fazem mais parte do meu foco atual.',
+                'honors-title': 'PRÊMIOS E<br>RECONHECIMENTOS', 'honors-desc': 'Ao longo da minha carreira, colaborei com criativos altamente talentosos, trocando conhecimentos e contribuindo para ambientes colaborativos que resultaram em trabalhos premiados.',
+                'aw-1': 'Associado a Daniel Portuga como Motion Designer', 'aw-2': 'Na SapientNitro como Diretor de Arte', 'aw-3': 'Na SapientNitro como Motion Designer.', 'aw-4': 'Na SapientNitro como Motion Designer.', 'aw-5': 'Na iThink como Motion Designer e Diretor de Arte.', 'aw-6': 'Na iThink como Motion Designer e Editor de Vídeo.', 'aw-7': 'Na iThink como Motion Designer e Diretor de Arte.', 'aw-8': 'Como Motion Designer, Diretor de Arte e Dev. Flash.',
+                'ft-title': 'VAMOS CONVERSAR', 'ft-desc': 'Todos os grandes relacionamentos começam com uma conversa.<br>Tem um projeto em mente e gostaria da minha ajuda? Me mande um alô!',
+                'ft-btn': 'ENVIAR', 'ft-srv-title': 'SERVIÇOS', 'ft-srv-1': 'Direção de Arte', 'ft-srv-2': 'Motion Design', 'ft-srv-3': 'Edição de Vídeo', 'ft-srv-4': 'Design 3D', 'ft-srv-5': 'Design de Som'
+            }
+        };
+
+        if (siteLang === 'pt') {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations.pt[key]) el.innerHTML = translations.pt[key];
+            });
+            // Traduzir Placeholders do Formulário
+            document.getElementById('formEmail').placeholder = "Seu e-mail";
+            document.getElementById('formMsg').placeholder = "Sua mensagem";
+        }
+
+
+        // ================= BANCO DE DADOS DOS PROJETOS (Bilingue) =================
+        const projectsData = {
+            'projeto1': {
+                title: { en: 'ONE NUTRITION - PURAVIDA', pt: 'ONE NUTRITION - PURAVIDA' },
+                client: { en: 'Puravida', pt: 'Puravida' },
+                role: { en: 'Art Direction, 3D Design, Motion', pt: 'Direção de Arte, Design 3D, Motion' },
+                tools: { en: 'Cinema 4D, Redshift, After Effects', pt: 'Cinema 4D, Redshift, After Effects' },
+                videoUrl: 'https://player.vimeo.com/video/SUA-ID-VIMEO?autoplay=1&background=0',
+                description: {
+                    en: `<p>The goal was to create a high-end visual campaign focusing heavily on the "appetite appeal" for the One Nutrition Chocolate product line. The challenge was making the 3D chocolate simulations look as realistic and delicious as possible while integrating clean, modern typographic design.</p>`,
+                    pt: `<p>O objetivo era criar uma campanha visual de alto padrão com foco pesado no "appetite appeal" para a linha de produtos One Nutrition Chocolate. O desafio foi fazer as simulações de chocolate em 3D parecerem o mais realista e deliciosas possível, integrando um design tipográfico moderno.</p>`
+                },
+                gallery: ['processo1-wireframe.jpg', 'processo1-styleframe.jpg']
+            },
+            'projeto2': {
+                title: { en: '3D PRODUCT VISUALIZATION', pt: 'VISUALIZAÇÃO DE PRODUTO 3D' },
+                client: { en: 'Studio X', pt: 'Studio X' },
+                role: { en: '3D Modeler, Lighting', pt: 'Modelagem 3D, Iluminação' },
+                tools: { en: 'Blender, Octane', pt: 'Blender, Octane' },
+                videoUrl: '', 
+                description: {
+                    en: `<p>This is an example of a project focused purely on high-fidelity 3D rendering and illustration, without any animation or video content.</p>`,
+                    pt: `<p>Este é um exemplo de um projeto focado puramente em renderização 3D de alta fidelidade e ilustração, sem qualquer conteúdo de animação ou vídeo.</p>`
+                },
+                gallery: ['projeto2-render1.jpg']
+            }
+        };
+
+        // ================= LÓGICA DO CASE STUDY MODAL =================
+        const caseStudyModal = document.getElementById('caseStudyModal');
+        
+        function openCaseStudy(projectId) {
+            const data = projectsData[projectId];
+            if (!data) return; 
+
+            caseStudyModal.scrollTop = 0;
+            
+            // Aqui ele puxa o texto no idioma atual (siteLang)
+            document.getElementById('csTitle').innerText = data.title[siteLang];
+            document.getElementById('csClient').innerText = data.client[siteLang];
+            document.getElementById('csRole').innerText = data.role[siteLang];
+            document.getElementById('csTools').innerText = data.tools[siteLang];
+            document.getElementById('csDescription').innerHTML = data.description[siteLang];
+            
+            const videoContainer = document.getElementById('csVideoContainer');
+            const videoIframe = document.getElementById('csVideo');
+            if (data.videoUrl && data.videoUrl.trim() !== '') {
+                videoContainer.style.display = 'block'; 
+                videoIframe.src = data.videoUrl;
+            } else {
+                videoContainer.style.display = 'none'; 
+                videoIframe.src = '';
+            }
+            
+            const galleryDiv = document.getElementById('csGallery');
+            galleryDiv.innerHTML = ''; 
+            data.gallery.forEach(imgSrc => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.loading = "lazy";
+                galleryDiv.appendChild(img);
+            });
+
+            caseStudyModal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeCaseStudy() {
+            caseStudyModal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            setTimeout(() => { document.getElementById('csVideo').src = ""; }, 400);
+        }
+
+        // ================= LÓGICA DO HERO, REEL E CAROUSEL =================
+        const words = document.querySelectorAll('.anim-word');
+        function animateRandomWord() {
+            if(words.length === 0) return;
+            const randomIdx = Math.floor(Math.random() * words.length);
+            const word = words[randomIdx];
+            word.classList.add('slide-up-out');
+            setTimeout(() => {
+                word.classList.remove('slide-up-out');
+                word.classList.add('slide-down-hidden');
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        word.classList.remove('slide-down-hidden');
+                    });
+                });
+            }, 600);
+        }
+        setInterval(animateRandomWord, 2000);
+
+        const reelModal = document.getElementById('videoModal');
+        const reelIframe = document.getElementById('reelVideo');
+        const reelIframeSrc = reelIframe.src; 
+        function openModal() { reelModal.classList.add('active'); reelIframe.src = reelIframeSrc + "&autoplay=1"; }
+        function closeModal() { reelModal.classList.remove('active'); reelIframe.src = ""; setTimeout(() => { reelIframe.src = reelIframeSrc; }, 100); }
+        
+        window.addEventListener('click', (event) => {
+            if (event.target === reelModal) closeModal();
+        });
+
+        const showcaseItems = document.querySelectorAll('.showcase-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.classList.add('in-view');
+                else entry.target.classList.remove('in-view');
+            });
+        }, { threshold: 0.5 }); 
+        showcaseItems.forEach(item => observer.observe(item));
+
+        const track = document.getElementById('track');
+        let currentIndex = 0;
+        const totalCards = 5; 
+        function getCardsVisible() { return window.innerWidth >= 1440 ? 5 : window.innerWidth >= 1024 ? 3 : 1; }
+        function moveCarousel(direction) {
+            const cardsVisible = getCardsVisible();
+            if (cardsVisible === totalCards) return; 
+            const maxIndex = totalCards - cardsVisible;
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex > maxIndex) currentIndex = maxIndex;
+            const cardWidth = track.children[0].getBoundingClientRect().width;
+            track.style.transform = `translateX(-${currentIndex * (cardWidth + 32)}px)`;
+        }
+        window.addEventListener('resize', () => {
+            const controls = document.querySelector('.carousel-controls');
+            if (getCardsVisible() === 5) { controls.style.display = 'none'; track.style.transform = `translateX(0px)`; } 
+            else { controls.style.display = 'flex'; }
+        });
+	// ================= SISTEMA DE IDIOMAS (i18n) =================
+	//let siteLang = 'en'; // Força o inglês para testar
+	
+	// Comente (ou apague) temporariamente estas 4 linhas abaixo:
+	// const userLang = navigator.language || navigator.userLanguage;
+	// if (userLang.toLowerCase().startsWith('pt')) {
+	//     siteLang = 'pt';
+	// }
+    </script>
+</body>
+</html>
