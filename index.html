@@ -484,7 +484,7 @@
                 <h2 class="footer-title" data-i18n="ft-title">GET IN TOUCH</h2>
                 <p class="body-copy col-2-3" data-i18n="ft-desc">All great relationships start with a conversation.<br>Do you have a project in mind and would like my help? Let's chat!</p>
                 
-                <form class="contact-form" action="https://formspree.io/f/SEU_ID_AQUI" method="POST">
+                <form class="contact-form" action="https://formspree.io/f/mpqkwbja" method="POST">
                     <input type="email" name="email" id="formEmail" placeholder="Your email" required>
                     <textarea name="message" id="formMsg" placeholder="Your message" required></textarea>
                     <button type="submit" data-i18n="ft-btn">SEND</button>
@@ -579,6 +579,53 @@
             document.getElementById('formMsg').placeholder = "Sua mensagem";
         }
 
+// ================= LÓGICA DO FORMULÁRIO (AJAX) =================
+const form = document.getElementById("my-form");
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  const status = document.getElementById("form-status");
+  const data = new FormData(event.target);
+  const btn = document.getElementById("submit-btn");
+  
+  // Mensagens bilingues para o status
+  const msgSuccess = siteLang === 'pt' ? "Mensagem enviada com sucesso!" : "Message sent successfully!";
+  const msgError = siteLang === 'pt' ? "Ops! Ocorreu um erro ao enviar." : "Oops! There was a problem submitting.";
+
+  btn.disabled = true; // Evita cliques duplos
+
+  fetch(event.target.action, {
+    method: form.method,
+    body: data,
+    headers: {
+        'Accept': 'application/json'
+    }
+  }).then(response => {
+    if (response.ok) {
+      status.innerHTML = msgSuccess;
+      status.style.color = "green";
+      status.style.display = "block";
+      form.reset(); // Limpa os campos
+    } else {
+      response.json().then(data => {
+        if (Object.hasOwn(data, 'errors')) {
+          status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+        } else {
+          status.innerHTML = msgError;
+        }
+        status.style.color = "red";
+        status.style.display = "block";
+      })
+    }
+    btn.disabled = false;
+  }).catch(error => {
+    status.innerHTML = msgError;
+    status.style.color = "red";
+    status.style.display = "block";
+    btn.disabled = false;
+  });
+}
+form.addEventListener("submit", handleSubmit)
 
         // ================= BANCO DE DADOS DOS PROJETOS (Bilingue) =================
         const projectsData = {
