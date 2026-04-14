@@ -487,7 +487,8 @@
                 <form class="contact-form" action="https://formspree.io/f/mpqkwbja" method="POST">
                     <input type="email" name="email" id="formEmail" placeholder="Your email" required>
                     <textarea name="message" id="formMsg" placeholder="Your message" required></textarea>
-                    <button type="submit" data-i18n="ft-btn">SEND</button>
+                    <button type="submit" id="submit-btn" data-i18n="ft-btn">SEND</button>
+			<p id="form-status" style="margin-top: 1.5rem; font-weight: 400; font-size: 0.9rem; display: none;"></p>
                 </form>
             </div>
         </div>
@@ -580,52 +581,55 @@
         }
 
 // ================= LÓGICA DO FORMULÁRIO (AJAX) =================
-const form = document.getElementById("my-form");
+const contactForm = document.getElementById("my-form");
 
-async function handleSubmit(event) {
-  event.preventDefault();
-  const status = document.getElementById("form-status");
-  const data = new FormData(event.target);
-  const btn = document.getElementById("submit-btn");
-  
-  // Mensagens bilingues para o status
-  const msgSuccess = siteLang === 'pt' ? "Mensagem enviada com sucesso!" : "Message sent successfully!";
-  const msgError = siteLang === 'pt' ? "Ops! Ocorreu um erro ao enviar." : "Oops! There was a problem submitting.";
+if (contactForm) {
+    contactForm.addEventListener("submit", async function(event) {
+        event.preventDefault(); // ISTO impede o redirecionamento
+        
+        const status = document.getElementById("form-status");
+        const btn = document.getElementById("submit-btn");
+        const data = new FormData(event.target);
+        
+        // Mensagens baseadas na variável siteLang que você já tem no seu código
+        const isPT = (typeof siteLang !== 'undefined' && siteLang === 'pt');
+        const msgSuccess = isPT ? "Mensagem enviada! Entrarei em contato em breve." : "Message sent! I'll get back to you soon.";
+        const msgError = isPT ? "Ops! Ocorreu um erro ao enviar." : "Oops! There was a problem submitting.";
 
-  btn.disabled = true; // Evita cliques duplos
-
-  fetch(event.target.action, {
-    method: form.method,
-    body: data,
-    headers: {
-        'Accept': 'application/json'
-    }
-  }).then(response => {
-    if (response.ok) {
-      status.innerHTML = msgSuccess;
-      status.style.color = "green";
-      status.style.display = "block";
-      form.reset(); // Limpa os campos
-    } else {
-      response.json().then(data => {
-        if (Object.hasOwn(data, 'errors')) {
-          status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
-        } else {
-          status.innerHTML = msgError;
+        btn.disabled = true;
+        if (status) {
+            status.style.display = "block";
+            status.innerHTML = isPT ? "Enviando..." : "Sending...";
+            status.style.color = "var(--text-dark)";
         }
-        status.style.color = "red";
-        status.style.display = "block";
-      })
-    }
-    btn.disabled = false;
-  }).catch(error => {
-    status.innerHTML = msgError;
-    status.style.color = "red";
-    status.style.display = "block";
-    btn.disabled = false;
-  });
+
+        fetch(event.target.action, {
+            method: contactForm.method,
+            body: data,
+            headers: { 'Accept': 'application/json' }
+        }).then(response => {
+            if (response.ok) {
+                if (status) {
+                    status.innerHTML = msgSuccess;
+                    status.style.color = "green";
+                }
+                contactForm.reset();
+            } else {
+                if (status) {
+                    status.innerHTML = msgError;
+                    status.style.color = "red";
+                }
+            }
+            btn.disabled = false;
+        }).catch(error => {
+            if (status) {
+                status.innerHTML = msgError;
+                status.style.color = "red";
+            }
+            btn.disabled = false;
+        });
+    });
 }
-form.addEventListener("submit", handleSubmit)
 
         // ================= BANCO DE DADOS DOS PROJETOS (Bilingue) =================
         const projectsData = {
