@@ -55,16 +55,82 @@
 
         /* ================= HERO SECTION ================= */
         .hero { 
-            min-height: calc(100vh - var(--header-height)); 
-            display: flex; flex-direction: column; justify-content: center; 
-            position: relative; padding: 2rem 0; 
+	    min-height: calc(100vh - var(--header-height)); 
+    	    display: flex; 
+    	    flex-direction: column; 
+    	    justify-content: center; 
+    	    position: relative; 
+    	    padding: 2rem 0; 
+    	    overflow: hidden;
+    	    z-index: 1;
         }
-        .hero-title { font-size: var(--font-hero); line-height: 1.1; text-transform: uppercase; max-width: 1200px; z-index: 2; position: relative; }
+.hero-bg { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 120%; /* Altura extra para o paralaxe ter espaço */
+    object-fit: cover; 
+    z-index: -1; 
+    opacity: 0.3; 
+    pointer-events: none;
+    transform: scale(1.1); /* Define o tamanho fixo inicial */
+    will-change: transform;
+}
+        }
+	.play-reel-section { 
+   		 position: relative; 
+   		 z-index: 2;
+	}
+        .hero-title { font-size: var(--font-hero); line-height: 1.0; text-transform: uppercase; max-width: 1200px; z-index: 2; position: relative; }
         .mask { display: inline-block; overflow: hidden; vertical-align: bottom; }
         .anim-word { display: inline-block; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
         .slide-up-out { transform: translateY(-100%); }
         .slide-down-hidden { transform: translateY(100%); transition: none; }
-        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.3; pointer-events: none; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.3; pointer-events: none; transform: scale(1.1); will-change: transform;}
+
+	/* ================= HERO LAYOUT ATUALIZADO ================= */
+        .hero-title { display: flex; flex-direction: column; }
+        
+        .hero-line { 
+            display: flex; 
+            align-items: center; /* Alinha a caixa de imagem com o meio das letras */
+            width: 70%; 
+            gap: 1.5rem; 
+            line-height: 0.8;
+            margin-bottom: 0.2rem;
+        }
+        
+        .hero-line.left { justify-content: flex-start; }
+        .hero-line.right { justify-content: flex-end; }
+        
+        /* Impede que a frase quebre de linha e esmague a caixa de imagem */
+        .hero-text { white-space: nowrap; }
+
+        .hero-box { 
+            flex-grow: 1; /* A MÁGICA: Faz a caixa preencher todo o espaço vazio da linha */
+            height: clamp(2rem, 5vw, 4.5rem); /* Altura exata da fonte */
+            background-color: var(--bg-dark); 
+            border-radius: 0px; 
+            position: relative;
+            overflow: hidden; 
+        }
+
+        /* Regra para quando você inserir as imagens/gifs nos blocos */
+        .hero-box img, .hero-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que a imagem preencha a caixa sem amassar */
+            display: block;
+        }
+
+        /* Ajustes mobile para o texto não vazar da tela do celular */
+        @media (max-width: 768px) {
+            .hero-line { gap: 0.5rem; }
+            .hero-line.right { justify-content: flex-start; } /* No mobile, alinhar tudo à esquerda costuma ficar mais bonito e legível */
+            .hero-box { height: clamp(1.5rem, 8vw, 3rem); }
+        }
+
 
         /* ================= PLAY REEL SECTION ================= */
         .play-reel-section { position: relative; height: 60vh; background: #000; display: flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -127,7 +193,7 @@
         .cs-close { font-size: 1.2rem; cursor: pointer; font-weight: bold; padding: 0.5rem 1rem; border: 1px solid white; border-radius: 50px; transition: 0.3s; }
         .cs-close:hover { background: white; color: black; }
 
-        .cs-video-container { width: 100%; aspect-ratio: 16/9; background: #000; margin-bottom: 4rem; display: none; }
+        .cs-video-container { width: 100%; aspect-ratio: 16/9; background: #000; margin-bottom: 2rem; display: none; }
         .cs-video-container iframe { width: 100%; height: 100%; border: none; }
 
         .cs-content-grid { display: flex; flex-wrap: wrap; gap: 4rem; margin-bottom: 6rem; margin-top: 4rem; }
@@ -225,20 +291,33 @@
         </nav>
     </header>
 
-    <section class="hero">
+<section class="hero">
         <img src="images/BG-20-Years.png" alt="Background" class="hero-bg">
         <div class="container">
-            <h1 class="hero-title" data-i18n="hero-title">
-                OVER<br>
-                <span class="mask"><span class="anim-word">20</span></span> 
-                <span class="mask"><span class="anim-word">YEARS</span></span><br>
-		
-                <span class="mask"><span class="anim-word">BRINGING</span></span> 
-                <span class="mask"><span class="anim-word">IDEAS</span></span><br>
-                AND STORIES<br>
-                TO LIFE<br>
-                THROUGH <span class="mask"><span class="anim-word">DESIGN</span></span><br>
-                AND <span class="mask"><span class="anim-word">MOTION.</span></span>
+            <h1 class="hero-title col-2-3">
+                <div class="hero-line left" data-i18n="hero-l1">OVER</div>
+                <div class="hero-line left">
+                    <div class="hero-text" data-i18n="hero-l2">
+                        <span class="mask"><span class="anim-word">20</span></span> 
+                        <span class="mask"><span class="anim-word">YEARS</span></span>
+                    </div>
+                    <div class="hero-box"></div> </div>
+                <div class="hero-line right" data-i18n="hero-l3">
+                    <span class="mask"><span class="anim-word">BRINGING</span></span> 
+                    <span class="mask"><span class="anim-word">IDEAS</span></span>
+                </div>
+                <div class="hero-line right">
+                    <div class="hero-box"></div> <div class="hero-text" data-i18n="hero-l4">AND STORIES</div>
+                </div>
+                <div class="hero-line right">
+                    <div class="hero-box"></div> <div class="hero-text" data-i18n="hero-l5">TO LIFE</div>
+                </div>
+                <div class="hero-line left" data-i18n="hero-l6">
+                    THROUGH <span class="mask"><span class="anim-word">DESIGN</span></span>
+                </div>
+                <div class="hero-line left" data-i18n="hero-l7">
+                    AND <span class="mask"><span class="anim-word">MOTION.</span></span>
+                </div>
             </h1>
         </div>
     </section>
@@ -327,22 +406,21 @@
 
     </section>
 
-    <div class="case-study-modal" id="caseStudyModal">
+<div class="case-study-modal" id="caseStudyModal">
         <div class="cs-header">
             <div class="cs-title" id="csTitle">PROJECT NAME</div>
             <div class="cs-close" onclick="closeCaseStudy()" data-i18n="cs-close">CLOSE ✕</div>
         </div>
         
-        <div class="cs-video-container" id="csVideoContainer">
-            <iframe id="csVideo" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
-        </div>
-
         <div class="container">
+            <div class="cs-video-container" id="csVideoContainer" style="margin-top: 2rem;">
+                <iframe id="csVideo" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+            </div>
+
             <div class="cs-content-grid">
                 <div class="cs-main-desc">
                     <h2 data-i18n="cs-challenge">THE CHALLENGE & PROCESS</h2>
-                    <div id="csDescription">
-                        </div>
+                    <div id="csDescription"></div>
                 </div>
                 <div class="cs-sidebar">
                     <div class="cs-meta-block">
@@ -360,8 +438,7 @@
                 </div>
             </div>
 
-            <div class="cs-gallery" id="csGallery">
-                </div>
+            <div class="cs-gallery" id="csGallery"></div>
         </div>
     </div>
 
@@ -495,10 +572,14 @@
                 <h2 class="footer-title" data-i18n="ft-title">GET IN TOUCH</h2>
                 <p class="body-copy col-2-3" data-i18n="ft-desc">All great relationships start with a conversation.<br>Do you have a project in mind and would like my help? Let's chat!</p>
                 
-                <form class="contact-form" action="https://formspree.io/f/mpqkwbja" method="POST">
+                <form class="contact-form" id="contactForm" action="https://formspree.io/f/mpqkwbja" method="POST">
                     <input type="email" name="email" id="formEmail" placeholder="Your email" required>
                     <textarea name="message" id="formMsg" placeholder="Your message" required></textarea>
-                    <button type="submit" data-i18n="ft-btn">SEND</button>
+                    
+                    <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 1rem;">
+                        <button type="submit" data-i18n="ft-btn">SEND</button>
+                        <span id="formStatus" style="font-weight: bold; font-size: 1.1rem;"></span>
+                    </div>
                 </form>
             </div>
         </div>
@@ -541,7 +622,7 @@
         </div>
     </footer>
 
-    <script>
+<script>
         // ================= SISTEMA DE IDIOMAS (i18n) =================
         let siteLang = 'en'; // Default
         const userLang = navigator.language || navigator.userLanguage;
@@ -552,7 +633,13 @@
         const translations = {
             'pt': {
                 'menu-reel': 'Reel', 'menu-services': 'Serviços', 'menu-showcase': 'Portfólio', 'menu-experience': 'Experiência', 'menu-contact': 'Contato',
-                'hero-title': `MAIS DE<br><span class="mask"><span class="anim-word">20</span></span> <span class="mask"><span class="anim-word">ANOS</span></span><br><span class="mask"><span class="anim-word">DANDO</span></span> <span class="mask"><span class="anim-word">VIDA</span></span><br>A IDEIAS<br>E HISTÓRIAS<br>COM <span class="mask"><span class="anim-word">DESIGN</span></span><br>E <span class="mask"><span class="anim-word">MOTION.</span></span>`,
+                'hero-l1': 'MAIS DE',
+                'hero-l2': '<span class="mask"><span class="anim-word">20</span></span> <span class="mask"><span class="anim-word">ANOS</span></span>',
+                'hero-l3': '<span class="mask"><span class="anim-word">DANDO</span></span> <span class="mask"><span class="anim-word">VIDA</span></span>',
+                'hero-l4': 'A IDEIAS',
+                'hero-l5': 'E HISTÓRIAS',
+                'hero-l6': 'COM <span class="mask"><span class="anim-word">DESIGN</span></span>',
+                'hero-l7': 'E <span class="mask"><span class="anim-word">MOTION.</span></span>',
                 'btn-play': 'ASSISTIR REEL ▶',
                 'what-desc': 'Olá, me chamo Eduardo Terrataca, sou um profissional criativo focado na criação de vídeos. Busco a excelência no craft, utilizando tecnologia e experiência para gastar menos tempo em tarefas repetitivas e mais tempo experimentando e criando.',
                 'what-title': 'O QUE EU FAÇO', 'what-sub': 'Trabalho com marcas, estúdios e agências, grandes e pequenos, em uma ampla gama de serviços de design, como:',
@@ -585,41 +672,54 @@
                 const key = el.getAttribute('data-i18n');
                 if (translations.pt[key]) el.innerHTML = translations.pt[key];
             });
-            // Traduzir Placeholders do Formulário
             document.getElementById('formEmail').placeholder = "Seu e-mail";
             document.getElementById('formMsg').placeholder = "Sua mensagem";
         }
 
-
-        // ================= BANCO DE DADOS DOS PROJETOS (Bilingue) =================
+        // ================= BANCO DE DADOS DOS PROJETOS =================
         const projectsData = {
             'projeto1': {
                 title: { en: 'ONE NUTRITION - PURAVIDA', pt: 'ONE NUTRITION - PURAVIDA' },
                 client: { en: 'Puravida', pt: 'Puravida' },
                 role: { en: 'Art Direction, 3D Design, Motion', pt: 'Direção de Arte, Design 3D, Motion' },
                 tools: { en: 'Cinema 4D, Redshift, After Effects', pt: 'Cinema 4D, Redshift, After Effects' },
-                videoUrl: 'https://player.vimeo.com/video/SUA-ID-VIMEO?autoplay=1&background=0',
+                videoUrl: 'https://player.vimeo.com/video/232535580',
                 description: {
-                    en: `<p>The goal was to create a high-end visual campaign focusing heavily on the "appetite appeal" for the One Nutrition Chocolate product line. The challenge was making the 3D chocolate simulations look as realistic and delicious as possible while integrating clean, modern typographic design.</p>`,
-                    pt: `<p>O objetivo era criar uma campanha visual de alto padrão com foco pesado no "appetite appeal" para a linha de produtos One Nutrition Chocolate. O desafio foi fazer as simulações de chocolate em 3D parecerem o mais realista e deliciosas possível, integrando um design tipográfico moderno.</p>`
+                    en: `<p>High-end visual campaign focusing on appetite appeal.</p>`,
+                    pt: `<p>Campanha visual de alto padrão com foco em appetite appeal.</p>`
                 },
-                gallery: ['processo1-wireframe.jpg', 'processo1-styleframe.jpg']
+                gallery: []
             },
             'projeto2': {
-                title: { en: '3D PRODUCT VISUALIZATION', pt: 'VISUALIZAÇÃO DE PRODUTO 3D' },
-                client: { en: 'Studio X', pt: 'Studio X' },
-                role: { en: '3D Modeler, Lighting', pt: 'Modelagem 3D, Iluminação' },
-                tools: { en: 'Blender, Octane', pt: 'Blender, Octane' },
-                videoUrl: '', 
-                description: {
-                    en: `<p>This is an example of a project focused purely on high-fidelity 3D rendering and illustration, without any animation or video content.</p>`,
-                    pt: `<p>Este é um exemplo de um projeto focado puramente em renderização 3D de alta fidelidade e ilustração, sem qualquer conteúdo de animação ou vídeo.</p>`
-                },
-                gallery: ['projeto2-render1.jpg']
+                title: { en: 'PROJECT 2 TITLE', pt: 'TÍTULO PROJETO 2' },
+                client: { en: 'Client 2', pt: 'Cliente 2' },
+                role: { en: 'Motion Design', pt: 'Motion Design' },
+                tools: { en: 'After Effects', pt: 'After Effects' },
+                videoUrl: '',
+                description: { en: `<p>Description en.</p>`, pt: `<p>Descrição pt.</p>` },
+                gallery: []
+            },
+            // ADICIONEI OS PROJETOS 3 E 4 PARA NÃO TRAVAR O LINK
+            'projeto3': {
+                title: { en: 'PROJECT 3 TITLE', pt: 'TÍTULO PROJETO 3' },
+                client: { en: 'Client 3', pt: 'Cliente 3' },
+                role: { en: '3D Design', pt: 'Design 3D' },
+                tools: { en: 'Blender', pt: 'Blender' },
+                videoUrl: '',
+                description: { en: `<p>Coming soon.</p>`, pt: `<p>Em breve.</p>` },
+                gallery: []
+            },
+            'projeto4': {
+                title: { en: 'PROJECT 4 TITLE', pt: 'TÍTULO PROJETO 4' },
+                client: { en: 'Client 4', pt: 'Cliente 4' },
+                role: { en: 'Editor', pt: 'Editor' },
+                tools: { en: 'Premiere', pt: 'Premiere' },
+                videoUrl: '',
+                description: { en: `<p>Coming soon.</p>`, pt: `<p>Em breve.</p>` },
+                gallery: []
             }
         };
 
-        // ================= LÓGICA DO CASE STUDY MODAL =================
         const caseStudyModal = document.getElementById('caseStudyModal');
         
         function openCaseStudy(projectId) {
@@ -627,8 +727,6 @@
             if (!data) return; 
 
             caseStudyModal.scrollTop = 0;
-            
-            // Aqui ele puxa o texto no idioma atual (siteLang)
             document.getElementById('csTitle').innerText = data.title[siteLang];
             document.getElementById('csClient').innerText = data.client[siteLang];
             document.getElementById('csRole').innerText = data.role[siteLang];
@@ -650,7 +748,6 @@
             data.gallery.forEach(imgSrc => {
                 const img = document.createElement('img');
                 img.src = imgSrc;
-                img.loading = "lazy";
                 galleryDiv.appendChild(img);
             });
 
@@ -664,7 +761,7 @@
             setTimeout(() => { document.getElementById('csVideo').src = ""; }, 400);
         }
 
-        // ================= LÓGICA DO HERO, REEL E CAROUSEL =================
+        // ================= HERO, REEL E OUTROS =================
         const words = document.querySelectorAll('.anim-word');
         function animateRandomWord() {
             if(words.length === 0) return;
@@ -675,61 +772,71 @@
                 word.classList.remove('slide-up-out');
                 word.classList.add('slide-down-hidden');
                 requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        word.classList.remove('slide-down-hidden');
-                    });
+                    requestAnimationFrame(() => { word.classList.remove('slide-down-hidden'); });
                 });
             }, 600);
         }
         setInterval(animateRandomWord, 2000);
 
-        // Lógica do Modal do Reel corrigida para o áudio parar de tocar
         const reelModal = document.getElementById('videoModal');
         const reelIframe = document.getElementById('reelVideo');
-        const reelUrl = "https://player.vimeo.com/video/232535580?autoplay=1&muted=0";
+        const reelUrl = "https://player.vimeo.com/video/232535580?autoplay=1";
         
-        function openModal() { 
-            reelModal.classList.add('active'); 
-            reelIframe.src = reelUrl; // Injeta o vídeo só quando abre
-        }
-        function closeModal() { 
-            reelModal.classList.remove('active'); 
-            reelIframe.src = ""; // Apaga o vídeo da memória, parando o áudio na hora
-        }
+        function openModal() { reelModal.classList.add('active'); reelIframe.src = reelUrl; }
+        function closeModal() { reelModal.classList.remove('active'); reelIframe.src = ""; }
         
-        window.addEventListener('click', (event) => {
-            if (event.target === reelModal) closeModal();
-        });
+        window.addEventListener('click', (event) => { if (event.target === reelModal) closeModal(); });
 
         const showcaseItems = document.querySelectorAll('.showcase-item');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) entry.target.classList.add('in-view');
-                else entry.target.classList.remove('in-view');
             });
         }, { threshold: 0.5 }); 
         showcaseItems.forEach(item => observer.observe(item));
 
         const track = document.getElementById('track');
         let currentIndex = 0;
-        const totalCards = 5; 
         function getCardsVisible() { return window.innerWidth >= 1440 ? 5 : window.innerWidth >= 1024 ? 3 : 1; }
         function moveCarousel(direction) {
             const cardsVisible = getCardsVisible();
-            if (cardsVisible === totalCards) return; 
-            const maxIndex = totalCards - cardsVisible;
+            const maxIndex = 5 - cardsVisible;
             currentIndex += direction;
             if (currentIndex < 0) currentIndex = 0;
             if (currentIndex > maxIndex) currentIndex = maxIndex;
             const cardWidth = track.children[0].getBoundingClientRect().width;
             track.style.transform = `translateX(-${currentIndex * (cardWidth + 32)}px)`;
         }
-        window.addEventListener('resize', () => {
-            const controls = document.querySelector('.carousel-controls');
-            if (getCardsVisible() === 5) { controls.style.display = 'none'; track.style.transform = `translateX(0px)`; } 
-            else { controls.style.display = 'flex'; }
-        });
 
+        // PARALAXE HERO
+window.addEventListener('scroll', () => {
+    const bg = document.querySelector('.hero-bg');
+    if (bg) {
+        let scrollValue = window.scrollY;
+        // IMPORTANTE: Mantemos o scale(1.1) aqui também para ele não resetar
+        bg.style.transform = `scale(1.1) translateY(${scrollValue * 0.2}px)`;
+    }
+});
+
+        // FORMULÁRIO AJAX
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+        contactForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const data = new FormData(event.target);
+            formStatus.innerText = siteLang === 'pt' ? 'Enviando...' : 'Sending...';
+            try {
+                const response = await fetch(event.target.action, {
+                    method: 'POST', body: data, headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    formStatus.innerText = siteLang === 'pt' ? 'Sucesso!' : 'Success!';
+                    contactForm.reset();
+                } else {
+                    formStatus.innerText = 'Error';
+                }
+            } catch (error) { formStatus.innerText = 'Error'; }
+        });
     </script>
 </body>
 </html>
