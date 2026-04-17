@@ -173,6 +173,28 @@
         .video-container { width: 80%; max-width: 1200px; aspect-ratio: 16/9; }
         .video-container iframe { width: 100%; height: 100%; border: none; }
 
+        /* =================MODAL NOTICE ================= */
+
+.modal-notice {
+    position: absolute; /* Tira o texto do alinhamento padrão e permite mover livremente */
+    bottom: 50px; /* Define a distância do texto para o final da tela */
+    left: 50%;
+    transform: translateX(-50%); /* Garante que fique 100% centralizado */
+    width: 90%;
+    max-width: 800px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #cccccc;
+    text-align: center;
+}
+
+/* Ajuste para telas de celular */
+@media (max-width: 768px) {
+    .modal-notice {
+        font-size: 0.95rem;
+        bottom: 30px; /* Fica um pouco mais perto do fundo no celular */
+    }
+}
         /* ================= WHAT I DO ================= */
         .what-i-do { padding: 4rem 0; }
         .section-title { font-size: var(--font-title); text-transform: uppercase; margin-bottom: 2rem; line-height: 1.1; }
@@ -367,6 +389,7 @@
         <div class="video-container">
             <iframe id="reelVideo" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
+        <p class="modal-notice" data-i18n="reel-notice">This reel is a bit old, from 2017. I've done a lot of cool stuff since then, so while the new reel isn't ready yet, you can see more recent work in the showcase section.</p>
     </div>
 
     <section class="what-i-do" id="services">
@@ -674,6 +697,7 @@
                 'hero-l6': 'COM <span class="mask"><span class="anim-word">DESIGN</span></span>',
                 'hero-l7': 'E <span class="mask"><span class="anim-word">MOTION.</span></span>',
                 'btn-play': 'ASSISTIR REEL ▶',
+                'reel-notice': 'Este reel é um pouco antigo, de 2017. Fiz muita coisa legal desde então, então enquanto o novo reel não fica pronto, você pode ver trabalhos mais recentes na seção de portfólio.',
                 'what-desc': 'Olá, me chamo Eduardo Terrataca, sou um profissional criativo focado na criação de vídeos. Busco a excelência no craft, utilizando tecnologia e experiência para gastar menos tempo em tarefas repetitivas e mais tempo experimentando e criando.',
                 'what-title': 'O QUE EU FAÇO', 'what-sub': 'Trabalho com marcas, estúdios e agências, grandes e pequenos, em uma ampla gama de serviços de design, como:',
                 'srv-art-title': 'DIREÇÃO DE ARTE', 'srv-art-desc': 'De rascunhos de conceito à execução estilística final em todos os pontos de contato.',
