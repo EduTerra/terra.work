@@ -791,14 +791,19 @@
         let currentIndex = 0;
         function getCardsVisible() { return window.innerWidth >= 1440 ? 5 : window.innerWidth >= 1024 ? 3 : 1; }
         function moveCarousel(direction) {
-            const cardsVisible = getCardsVisible();
-            const maxIndex = 5 - cardsVisible;
-            currentIndex += direction;
-            if (currentIndex < 0) currentIndex = 0;
-            if (currentIndex > maxIndex) currentIndex = maxIndex;
-            const cardWidth = track.children[0].getBoundingClientRect().width;
-            track.style.transform = `translateX(-${currentIndex * (cardWidth + 32)}px)`;
+        const cardsVisible = getCardsVisible();
+        const maxIndex = 5 - cardsVisible; // total de cards
+        currentIndex += direction;
+        // LOOPING ---
+        if (currentIndex < 0) {
+         currentIndex = maxIndex; // Se tentar voltar antes do primeiro card, pula lá pro último
+         } else if (currentIndex > maxIndex) {
+         currentIndex = 0; // Se passou do último card, volta pro primeiro (início)
         }
+        const cardWidth = track.children[0].getBoundingClientRect().width;
+        track.style.transform = `translateX(-${currentIndex * (cardWidth + 32)}px)`;
+        }
+
 
         const carouselControlButtons = document.querySelectorAll('.control-btn[data-carousel]');
         carouselControlButtons.forEach(button => {
@@ -811,12 +816,12 @@
         }, 5000); // Muda a cada 5 segundos
 
         // PARALAXE HERO
-window.addEventListener('scroll', () => {
-    const bg = document.querySelector('.hero-bg');
-    if (bg) {
-        let scrollValue = window.scrollY;
-        // Mantemos o translate(-50%, -50%) para centralizar junto com o parallax
-        bg.style.transform = `translate(-50%, calc(-50% + ${scrollValue * 0.2}px)) scale(1)`;
+        window.addEventListener('scroll', () => {
+         const bg = document.querySelector('.hero-bg');
+         if (bg) {
+           let scrollValue = window.scrollY;
+          // Mantemos o translate(-50%, -50%) para centralizar junto com o parallax
+         bg.style.transform = `translate(-50%, calc(-50% + ${scrollValue * 0.2}px)) scale(1)`;
     }
 });
 
@@ -1240,44 +1245,52 @@ window.addEventListener('scroll', () => {
             }
         };
 
+
+
         const caseStudyModal = document.getElementById('caseStudyModal');
         
         function openCaseStudy(projectId) {
-            const data = projectsData[projectId];
-            if (!data) return; 
+         const data = projectsData[projectId];
+         if (!data) return; 
 
-            caseStudyModal.scrollTop = 0;
-            document.getElementById('csTitle').innerText = data.title[siteLang];
-            document.getElementById('csClient').innerText = data.client[siteLang];
-            document.getElementById('csRole').innerText = data.role[siteLang];
-            document.getElementById('csTools').innerText = data.tools[siteLang];
-            document.getElementById('csDescription').innerHTML = data.description[siteLang];
-            
-            const videoContainer = document.getElementById('csVideoContainer');
-            const videoIframe = document.getElementById('csVideo');
+         // Removemos o scrollTop = 0 daqui!
+
+         document.getElementById('csTitle').innerText = data.title[siteLang];
+         document.getElementById('csClient').innerText = data.client[siteLang];
+         document.getElementById('csRole').innerText = data.role[siteLang];
+         document.getElementById('csTools').innerText = data.tools[siteLang];
+         document.getElementById('csDescription').innerHTML = data.description[siteLang];
+    
+         const videoContainer = document.getElementById('csVideoContainer');
+         const videoIframe = document.getElementById('csVideo');
             if (data.videoUrl && data.videoUrl.trim() !== '') {
-                videoContainer.style.display = 'block'; 
-                videoIframe.src = data.videoUrl;
+            videoContainer.style.display = 'block'; 
+            videoIframe.src = data.videoUrl;
             } else {
-                videoContainer.style.display = 'none'; 
-                videoIframe.src = '';
-            }
-            
-            const galleryDiv = document.getElementById('csGallery');
-            galleryDiv.innerHTML = ''; 
-            data.gallery.forEach(imgSrc => {
-                const img = document.createElement('img');
-                img.src = imgSrc;
-                galleryDiv.appendChild(img);
-            });
-
-            caseStudyModal.classList.add('active');
-            caseStudyModal.setAttribute('aria-hidden', 'false');
-            document.body.classList.add('modal-open');
-            // Focus trap
-            const focusableElements = caseStudyModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-            if (focusableElements.length) focusableElements[0].focus();
+            videoContainer.style.display = 'none'; 
+            videoIframe.src = '';
         }
+        
+        const galleryDiv = document.getElementById('csGallery');
+        galleryDiv.innerHTML = ''; 
+        data.gallery.forEach(imgSrc => {
+        const img = document.createElement('img');
+        img.src = imgSrc;
+        galleryDiv.appendChild(img);
+         });
+
+         // 1. Primeiro tornamos o modal visível (isso remove o display: none)
+         caseStudyModal.classList.add('active');
+           caseStudyModal.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('modal-open');
+
+          // 2. AGORA SIM resetamos o scroll para o topo, pois o elemento já tem altura calculada
+        caseStudyModal.scrollTop = 0;
+
+          // Focus trap
+         const focusableElements = caseStudyModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+         if (focusableElements.length) focusableElements[0].focus();
+            }
 
         function closeCaseStudy() {
             caseStudyModal.classList.remove('active');
