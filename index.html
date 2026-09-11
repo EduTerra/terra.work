@@ -9,20 +9,35 @@
     <meta property="og:title" content="TERRA.WORK | Edu Terrataca">
     <meta property="og:description" content="Design and Motion Portfolio.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://terrawork">
-    <meta property="og:image" content="https://terrawork.net/images/Site-Thumb-Socials.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
+    <meta property="og:url" content="https://terra.work">
+    <meta property="og:image" content="https://terra.work/images/Hero_Thumb_Reel.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="TERRA.WORK | Edu Terrataca">
     <meta name="twitter:description" content="Design and Motion Portfolio.">
-    <meta name="twitter:image" content="https://terrawork.net/images/Site-Thumb-Socials.jpg">
-
+    <meta name="twitter:image" content="https://terra.work/images/Hero_Thumb_Reel.jpg">
+    <link rel="canonical" href="https://terra.work/">
+    <meta name="robots" content="index, follow">
     <link rel="icon" type="image/png" href="images/favicon.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Edu Terrataca",
+        "url": "https://terra.work/",
+        "jobTitle": "Art Director, Motion Designer and 3D Designer",
+        "sameAs": [
+            "https://vimeo.com/eduterrataca",
+            "https://www.linkedin.com/in/eduterrataca/",
+            "https://www.behance.net/eduterrataca",
+            "https://www.instagram.com/terra.work/"
+        ]
+    }
+    </script>
     
     <style>
         /* ================= VARIABLES & RESET ================= */
@@ -39,14 +54,17 @@
             --header-height: 110px; 
         }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; scrollbar-gutter: stable; }
         html, body { overflow-x: hidden; width: 100%; }
-        body.modal-open { overflow: hidden; padding-right: 15px; } /* Ajuste do pulo da barra de rolagem */
+        body.modal-open { overflow: hidden; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Lato', sans-serif; font-weight: 700; background-color: var(--bg-light); color: var(--text-dark); }
         a { text-decoration: none; color: inherit; transition: opacity 0.3s; }
         a:hover { opacity: 0.7; }
+        a:focus-visible, button:focus-visible, [role="button"]:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+        .skip-link { position: fixed; top: 1rem; left: 1rem; z-index: 20000; padding: 0.75rem 1rem; background: var(--text-light); color: var(--text-dark); transform: translateY(-200%); transition: transform 0.2s ease; }
+        .skip-link:focus { transform: translateY(0); }
         img, video { max-width: 100%; display: block; }
         
         @media (prefers-reduced-motion: reduce) {
@@ -62,147 +80,59 @@
         .mt-1 { margin-top: 1rem; }
         .form-actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 1rem; }
         .status-text { font-weight: bold; font-size: 1.1rem; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+        /* ================= LAYOUT GUIDES ================= */
+        .guide-section { --guide-color: rgba(17, 17, 17, 0.1); position: relative; isolation: isolate; border-top: 1px solid var(--guide-color); }
+        .guide-section::before { 
+            content: ''; position: absolute; z-index: 0; top: 0; bottom: 0; left: 50%; width: min(90%, 1440px); 
+            transform: translateX(-50%); pointer-events: none; 
+            background: linear-gradient(var(--guide-color), var(--guide-color)) 0 0 / 1px 100% no-repeat,
+                        linear-gradient(var(--guide-color), var(--guide-color)) 18px 0 / 1px 100% no-repeat,
+                        linear-gradient(var(--guide-color), var(--guide-color)) calc(100% - 18px) 0 / 1px 100% no-repeat,
+                        linear-gradient(var(--guide-color), var(--guide-color)) 100% 0 / 1px 100% no-repeat;
+        }
+        .guide-section > * { position: relative; z-index: 1; }
+        .guide-section-dark { --guide-color: rgba(255, 255, 255, 0.12); }
+
+        /* ================= SCROLL REVEALS ================= */
+        .scroll-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
+        .scroll-stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .scroll-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
+        .scroll-stagger.is-visible > *:nth-child(2) { transition-delay: 0.08s; }
+        .scroll-stagger.is-visible > *:nth-child(3) { transition-delay: 0.16s; }
+        .scroll-stagger.is-visible > *:nth-child(4) { transition-delay: 0.24s; }
+        .scroll-stagger.is-visible > *:nth-child(5) { transition-delay: 0.32s; }
+        .scroll-stagger.is-visible > *:nth-child(6) { transition-delay: 0.4s; }
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-reveal, .scroll-stagger > * { opacity: 1; transform: none; transition: none; }
+        }
 
         /* ================= HEADER ================= */
         header { 
             display: flex; justify-content: space-between; align-items: center; 
-            width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 5%;
+            width: 100%; max-width: none; margin: 0; padding: 0 max(5%, calc((100% - 1440px) / 2 + 5%));
             height: var(--header-height); position: relative; z-index: 10; 
-            background: var(--bg-light);
+            background: var(--bg-dark); color: var(--text-light);
         }
         .logo { font-size: 2.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family: 'Lato', sans-serif; }
-        .logo img { max-width: 50%; height: auto; display: block; }
-        nav { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
-        .btn-contact { background: var(--text-dark); color: var(--text-light); padding: 0.5rem 1.5rem; border-radius: 50px; }
+        .logo img { max-width: 50%; height: auto; display: block; filter: brightness(0) invert(1); }
+        nav { display: flex; gap: clamp(0.75rem, 2vw, 2rem); align-items: center; flex-wrap: nowrap; white-space: nowrap; }
+        .btn-contact { background: var(--text-light); color: var(--text-dark); padding: 0.5rem 1.5rem; border-radius: 50px; }
+        .language-toggle { background: transparent; color: var(--text-light); border: 1px solid rgba(255, 255, 255, 0.65); padding: 0.45rem 0.75rem; border-radius: 50px; cursor: pointer; font: inherit; font-size: 0.85rem; }
+        .menu-toggle { display: none; background: transparent; color: var(--text-light); border: 1px solid rgba(255, 255, 255, 0.65); padding: 0.45rem 0.75rem; border-radius: 50px; cursor: pointer; font: inherit; }
 
         /* ================= HERO SECTION ================= */
-        .hero { 
-	    height: auto; 
-    	    display: flex; 
-    	    flex-direction: column; 
-    	    justify-content: center; 
-    	    position: relative; 
-    	    padding: 2rem 0; 
-    	    overflow: hidden;
-    	    z-index: 1;
-        }
-        .play-reel-section { 
-            position: relative; 
-            z-index: 2;
-        }
-        .play-reel-trigger {
-            position: absolute;
-            inset: 0;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: inherit;
-            padding: 0;
-        }
-        .hero-title { font-size: var(--font-hero); line-height: 1.0; text-transform: uppercase; max-width: 1200px; z-index: 2; position: relative; }
-        .mask { display: inline-block; overflow: hidden; vertical-align: bottom; }
-        .anim-word { display: inline-block; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-        .slide-up-out { transform: translateY(-100%); }
-        .slide-down-hidden { transform: translateY(100%); transition: none; }
-        .hero-bg { position: absolute; top: 50%; left: 50%; width: 100%; height: 130%; object-fit: contain; z-index: -1; opacity: 0.3; pointer-events: none; transform: translate(-50%, -50%) scale(1); will-change: transform;}
+        .hero { background: var(--bg-dark); height: calc(100svh - var(--header-height)); min-height: 0; display: flex; align-items: center; justify-content: center; padding: 0 0 2rem; }
+        .hero-video-frame { position: relative; width: min(100%, calc((100svh - var(--header-height) - 2rem) * 16 / 9)); aspect-ratio: 16 / 9; }
+        .hero-video { width: 100%; height: 100%; border: 0; display: block; }
+        .hero-play-overlay { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; background: rgba(34, 34, 34, 0.18); }
+        .hero-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .hero-play-button { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 1rem; border: 0; background: transparent; color: var(--text-light); cursor: pointer; font: inherit; text-transform: uppercase; }
+        .hero-play-logo { width: 590px; max-width: 90%; height: auto; }
+        .hero-play-label { font-size: clamp(1.1rem, 2vw, 1.75rem); letter-spacing: 0.04em; }
 
-        /* Responsividade para a imagem de fundo do hero */
-        @media (max-width: 768px) {
-            .hero-bg {
-                height: 100%;
-                transform: translate(-50%, -50%) scale(0.8);
-            }
-        }
-
-	/* ================= HERO LAYOUT ATUALIZADO ================= */
-        .hero-title { display: flex; flex-direction: column; }
-        
-        .hero-line { 
-            display: flex; 
-            align-items: center; /* Alinha a caixa de imagem com o meio das letras */
-            width: 70%; 
-            gap: 1.5rem; 
-            line-height: 0.8;
-            margin-bottom: 0.2rem;
-        }
-        
-        .hero-line.left { justify-content: flex-start; }
-        .hero-line.right { justify-content: flex-end; }
-        
-        /* Impede que a frase quebre de linha e esmague a caixa de imagem */
-        .hero-text { white-space: nowrap; }
-
-        .hero-box { 
-            flex-grow: 1; /* A MÁGICA: Faz a caixa preencher todo o espaço vazio da linha */
-            height: clamp(2rem, 5vw, 4.5rem); /* Altura exata da fonte */
-            background-color: var(--bg-dark); 
-            border-radius: 0px; 
-            position: relative;
-            overflow: hidden; 
-        }
-
-
-        .hero-box img, .hero-box video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Garante que a imagem preencha a caixa sem amassar */
-            display: block;
-        }
-
-        /* Ajustes mobile para o texto não vazar da tela do celular */
-        @media (max-width: 768px) {
-            .hero-line { gap: 0.5rem; }
-            .hero-line.right { justify-content: flex-start; } /* No mobile, alinhar tudo à esquerda costuma ficar mais bonito e legível */
-            .hero-box { height: clamp(1.5rem, 8vw, 3rem); }
-        }
-
-        /* Ajustes para celulares com largura muito fina */
-        @media (max-width: 480px) {
-            .hero-title { font-size: clamp(1.5rem, 40vw, 3rem); }
-            .hero-line { width: 100%; }
-        }
-
-
-        /* ================= PLAY REEL SECTION ================= */
-        .play-reel-section { position: relative; height: 60vh; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .play-reel-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 1; transition: opacity 0.3s; clip-path: polygon(0 100px, 100% 0, 100% 100%, 0 100%); }
-        .play-btn { position: relative; z-index: 2; color: #fff; font-size: var(--font-title); display: flex; align-items: center; gap: 1rem; }
-        .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; }
-        .video-modal.active { display: flex; }
-        .video-modal .cs-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-        
-        .video-container { width: 80%; max-width: 1200px; aspect-ratio: 16/9; }
-        .video-container iframe { width: 100%; height: 100%; border: none; }
-
-        /* =================MODAL NOTICE ================= */
-
-.modal-notice {
-    position: absolute; /* Tira o texto do alinhamento padrão e permite mover livremente */
-    bottom: 50px; /* Define a distância do texto para o final da tela */
-    left: 50%;
-    transform: translateX(-50%); /* Garante que fique 100% centralizado */
-    width: 90%;
-    max-width: 800px;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #cccccc;
-    text-align: center;
-}
-
-/* Ajuste para telas de celular */
-@media (max-width: 768px) {
-    .modal-notice {
-        font-size: 0.95rem;
-        bottom: 30px; /* Fica um pouco mais perto do fundo no celular */
-    }
-}
         /* ================= WHAT I DO ================= */
         .what-i-do { padding: 4rem 0; }
         .section-title { font-size: var(--font-title); text-transform: uppercase; margin-bottom: 2rem; line-height: 1.1; }
@@ -216,6 +146,17 @@
         .control-btn { width: 50px; height: 50px; background: none; border: 1px solid var(--text-dark); cursor: pointer; font-size: 1.5rem; align-items: center; justify-content: center; transition: all 0.3s; }
         @media (max-width: 1439px) { .service-card { min-width: calc((100% - 4rem) / 3); } .carousel-controls { display: flex; } }
         @media (max-width: 1023px) { .service-card { min-width: 100%; } }
+
+        /* ================= GENERATIVE AI ================= */
+        .generative-ai { padding: 4rem 0; }
+        .generative-ai-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 4rem; }
+        .generative-ai-copy { max-width: 600px; align-self: start; display: flex; flex-direction: column; justify-content: flex-start; }
+        .generative-ai-copy .section-title { margin-bottom: 1.5rem; }
+        .generative-ai-video { width: 100%; aspect-ratio: 16 / 9; border: 0; display: block; align-self: start; }
+        @media (max-width: 768px) {
+            .generative-ai { padding: 6rem 0; }
+            .generative-ai-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
 
 	    /* ================= AROUND THE WORLD ================= */
         .around-world { position: relative; padding: 3rem 0; overflow: hidden; display: flex; align-items: center;  margin-bottom: 3rem; }
@@ -318,11 +259,15 @@
         @media (max-width: 768px) {
             .container { padding: 0 1.5rem; }
             .col-2-3 { max-width: 100%; }
+            .guide-section::before { width: calc(100% - 3rem); background: linear-gradient(var(--guide-color), var(--guide-color)) 0 0 / 1px 100% no-repeat, linear-gradient(var(--guide-color), var(--guide-color)) 14px 0 / 1px 100% no-repeat, linear-gradient(var(--guide-color), var(--guide-color)) calc(100% - 14px) 0 / 1px 100% no-repeat, linear-gradient(var(--guide-color), var(--guide-color)) 100% 0 / 1px 100% no-repeat; }
             .what-i-do, .tools-wrapper, .experience, .honors-awards { padding: 6rem 0; }
             .section-title { font-size: 2.8rem; margin-bottom: 3rem; }
             header { flex-direction: row; align-items: center; gap: 1rem; padding: 1rem 1.5rem; flex-wrap: wrap; }
             .logo { font-size: 1.5rem; }
-            nav { gap: 1rem; font-size: 0.9rem; }
+            .menu-toggle { display: block; }
+            nav { display: none; position: absolute; top: 100%; left: 1.5rem; right: 1.5rem; padding: 1rem; background: var(--bg-dark); border: 1px solid rgba(255, 255, 255, 0.18); flex-direction: column; align-items: stretch; gap: 0.75rem; white-space: normal; }
+            nav.is-open { display: flex; }
+            nav a, nav .language-toggle { text-align: center; padding: 0.75rem 1rem; }
             .showcase-item { height: 250px; }
             .award-item { flex-direction: column; padding: 3rem 0; gap: 1rem; }
             .footer-block { padding: 4rem 0; }
@@ -338,98 +283,72 @@
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#main-content" data-i18n="skip-content">Skip to content</a>
 
     <header role="banner">
         <a href="#" class="logo"><img src="images/Logo-Terra.Work.png" alt="TERRA.WORK Logo"></a>
-        <nav role="navigation" aria-label="Main navigation">
+        <button type="button" class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNavigation" data-i18n="menu-toggle">MENU</button>
+        <nav role="navigation" id="mainNavigation" aria-label="Main navigation">
             <a href="#reel" data-i18n="menu-reel">Reel</a>
             <a href="#services" data-i18n="menu-services">Services</a>
             <a href="#showcase" data-i18n="menu-showcase">Showcase</a>
             <a href="#experience" data-i18n="menu-experience">Experience</a>
+            <button type="button" class="language-toggle" id="languageToggle" aria-label="Switch to Portuguese">PT</button>
             <a href="#contact" class="btn-contact" data-i18n="menu-contact">Contact</a>
         </nav>
     </header>
 
-    <main>
-        <section class="hero">
-            <img src="images/BG-20-Years.png" alt="Background" class="hero-bg">
-            <div class="container">
-                <h1 class="hero-title col-2-3">
-                <div class="hero-line left" data-i18n="hero-l1">OVER</div>
-                <div class="hero-line left">
-                    <div class="hero-text" data-i18n="hero-l2">
-                        <span class="mask"><span class="anim-word">20</span></span> 
-                        <span class="mask"><span class="anim-word">YEARS</span></span>
-                    </div>
-                    <div class="hero-box"></div> </div>
-                <div class="hero-line right" data-i18n="hero-l3">
-                    <span class="mask"><span class="anim-word">BRINGING</span></span> 
-                    <span class="mask"><span class="anim-word">IDEAS</span></span>
+    <main id="main-content">
+        <section class="hero guide-section guide-section-dark" id="reel" aria-label="Portfolio reel">
+            <div class="hero-video-frame">
+                <iframe
+                    class="hero-video"
+                    id="heroVideo"
+                    src="https://player.vimeo.com/video/1225761055?autoplay=0&muted=0&loop=1&title=0&byline=0&portrait=0"
+                    title="Portfolio reel"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen
+                    referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                <div class="hero-play-overlay" id="heroPlayOverlay">
+                    <img class="hero-thumb" src="images/Hero_Thumb_Reel.jpg" alt="" fetchpriority="high" decoding="async">
+                    <button type="button" class="hero-play-button" id="heroPlayButton" aria-label="Watch the reel" data-i18n-aria="aria-play-reel">
+                        <img class="hero-play-logo" src="images/Logos_MotGif.gif" alt="TERRA.WORK">
+                        <span class="hero-play-label" data-i18n="btn-play">WATCH THE REEL</span>
+                    </button>
                 </div>
-                <div class="hero-line right">
-                    <div class="hero-box"></div> <div class="hero-text" data-i18n="hero-l4">AND STORIES</div>
-                </div>
-                <div class="hero-line right">
-                    <div class="hero-box"></div> <div class="hero-text" data-i18n="hero-l5">TO LIFE</div>
-                </div>
-                <div class="hero-line left" data-i18n="hero-l6">
-                    THROUGH <span class="mask"><span class="anim-word">DESIGN</span></span>
-                </div>
-                <div class="hero-line left" data-i18n="hero-l7">
-                    AND <span class="mask"><span class="anim-word">MOTION.</span></span>
-                </div>
-            </h1>
-        </div>
-    </section>
+            </div>
+        </section>
 
-    <section class="play-reel-section" id="reel">
-        <video class="play-reel-bg" autoplay loop muted playsinline>
-		    <source src="videos/Video-Hero-Terrawork.webm" type="video/webm">
-            <source src="videos/Video-Hero-TerraWork.mp4" type="video/mp4">
-        </video>
-        <button type="button" class="play-reel-trigger" aria-label="Play reel video">
-            <span class="play-btn" data-i18n="btn-play">PLAY REEL ▶</span>
-        </button>
-    </section>
-
-    <div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Video reel modal">
-        <button type="button" class="cs-close" data-i18n="cs-close" aria-label="Close video modal">CLOSE ✕</button>
-        <div class="video-container">
-            <iframe id="reelVideo" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <p class="modal-notice" data-i18n="reel-notice"> .</p>
-    </div>
-
-    <section class="what-i-do" id="services">
+    <section class="what-i-do guide-section" id="services">
         <div class="container">
             <p class="body-copy col-2-3 mb-4" data-i18n="what-desc">Hi, I'm Eduardo Terrataca, a creative professional focused on creating videos, I seek excellence in craft, utilizing technology and expertise to spend less time on repetitive tasks and more time experimenting and creating.</p>
             <h2 class="section-title" data-i18n="what-title">WHAT I DO</h2>
             <p class="body-copy col-2-3" data-i18n="what-sub">I work with brands, studios and agencies, big and small, on a broad range of design services, such as:</p>
             
             <div class="carousel-wrapper">
-                <div class="carousel-track" id="track">
+                <div class="carousel-track scroll-stagger" id="track">
                     <div class="service-card">
-                        <img src="images/icon-art.png" alt="Art Direction icon">
+                        <img src="images/icon-art.png" alt="Art Direction icon" loading="lazy" decoding="async">
                         <h3 data-i18n="srv-art-title">ART DIRECTION</h3>
                         <p data-i18n="srv-art-desc">From concept sketches to final stylistic execution across all touchpoints.</p>
                     </div>
                     <div class="service-card">
-                        <img src="images/icon-motion.png" alt="Motion Design icon">
+                        <img src="images/icon-motion.png" alt="Motion Design icon" loading="lazy" decoding="async">
                         <h3 data-i18n="srv-mot-title">MOTION DESIGN</h3>
                         <p data-i18n="srv-mot-desc">Create purposeful movement that communicates ideas instantly.</p>
                     </div>
                     <div class="service-card">
-                        <img src="images/icon-video.png" alt="Video Editing icon">
+                        <img src="images/icon-video.png" alt="Video Editing icon" loading="lazy" decoding="async">
                         <h3 data-i18n="srv-vid-title">VIDEO EDITING</h3>
                         <p data-i18n="srv-vid-desc">Material selection, color grading, choose an edit pacing that fits the story.</p>
                     </div>
                     <div class="service-card">
-                        <img src="images/icon-3d.png" alt="3D Design icon">
+                        <img src="images/icon-3d.png" alt="3D Design icon" loading="lazy" decoding="async">
                         <h3 data-i18n="srv-3d-title">3D DESIGN</h3>
                         <p data-i18n="srv-3d-desc">Modeling, texturing and lighting environments and products.</p>
                     </div>
                     <div class="service-card">
-                        <img src="images/icon-sound.png" alt="Sound Design icon">
+                        <img src="images/icon-sound.png" alt="Sound Design icon" loading="lazy" decoding="async">
                         <h3 data-i18n="srv-snd-title">SOUND DESIGN</h3>
                         <p data-i18n="srv-snd-desc">Enhancing visuals with appropriate soundscapes and audio mixing.</p>
                     </div>
@@ -442,25 +361,43 @@
         </div>
     </section>
 
-    <section class="around-world">
-        <img src="images/bg-around-the-world.png" alt="World Map" class="around-bg">
+    <section class="generative-ai guide-section" id="generative-ai">
+        <div class="container generative-ai-grid">
+            <div class="generative-ai-copy">
+                <h2 class="section-title" data-i18n="ai-title">AND GENERATIVE AI?</h2>
+                <p class="body-copy mb-0" data-i18n="ai-desc">I've been studying generative AI since 2022. I started with demanding local models and moved to online models in search of speed and variety.<br><br>But the fact is: technology changes, while creative direction is permanent. Without a clear vision, AI only generates randomness. It is human curation, intention and strategy that bring cohesion, ensuring that every deliverable aligns with the brand identity and the project's narrative.</p>
+            </div>
+            <iframe
+                class="generative-ai-video"
+                id="generativeAiVideo"
+                src="https://player.vimeo.com/video/1226055113?autoplay=1&muted=1&loop=1&title=0&byline=0&portrait=0"
+                title="Generative AI project"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+    </section>
+
+    <section class="around-world guide-section">
+        <img src="images/bg-around-the-world.png" alt="World Map" class="around-bg" loading="lazy" decoding="async">
         <div class="container around-content">
             <h2 class="section-title" data-i18n="around-title">WORK FEATURED<br>AROUND THE WORLD</h2>
             <p class="body-copy col-2-3 mb-0" data-i18n="around-desc">Working remotely, I've had the opportunity to participate on projects around the world. I also sell assets in stock libraries, where they're used by people globally. Knowing that my work reaches people worldwide makes me very proud.</p>
         </div>
     </section>
 
-    <section class="showcase-section" id="showcase">
+    <section class="showcase-section guide-section guide-section-dark" id="showcase">
         <div class="container">
             <h2 class="section-title" data-i18n="showcase-title">SHOWCASE</h2>
         </div>
-        <div class="showcase-grid">
-            <img src="projects/P1-Cena-Logo.png" alt="CCXP Case" class="showcase-item" loading="lazy" data-project="projeto1" tabindex="0">
-            <img src="projects/P2-Cena-Logo.png" alt="Projeto 2" class="showcase-item" loading="lazy" data-project="projeto2" tabindex="1">
-            <img src="projects/P3-Cena-Logo.png" alt="Projeto 3" class="showcase-item" loading="lazy" data-project="projeto3" tabindex="2">
-            <img src="projects/P4-Cena-Logo.png" alt="Projeto 4" class="showcase-item" loading="lazy" data-project="projeto4" tabindex="3">
-            <img src="projects/P5-Cena-Logo.png" alt="Projeto 5" class="showcase-item" loading="lazy" data-project="projeto5" tabindex="4">
-            <img src="projects/P6-Cena-Logo.png" alt="Projeto 6" class="showcase-item" loading="lazy" data-project="projeto6" tabindex="5">
+        <div class="showcase-grid scroll-stagger">
+            <img src="projects/P1-Cena-Logo.png" alt="CCXP Case" class="showcase-item" loading="lazy" data-project="projeto1" role="button" aria-haspopup="dialog" tabindex="0">
+            <img src="projects/P2-Cena-Logo.png" alt="Projeto 2" class="showcase-item" loading="lazy" data-project="projeto2" role="button" aria-haspopup="dialog" tabindex="0">
+            <img src="projects/P3-Cena-Logo.png" alt="Projeto 3" class="showcase-item" loading="lazy" data-project="projeto3" role="button" aria-haspopup="dialog" tabindex="0">
+            <img src="projects/P4-Cena-Logo.png" alt="Projeto 4" class="showcase-item" loading="lazy" data-project="projeto4" role="button" aria-haspopup="dialog" tabindex="0">
+            <img src="projects/P5-Cena-Logo.png" alt="Projeto 5" class="showcase-item" loading="lazy" data-project="projeto5" role="button" aria-haspopup="dialog" tabindex="0">
+            <img src="projects/P6-Cena-Logo.png" alt="Projeto 6" class="showcase-item" loading="lazy" data-project="projeto6" role="button" aria-haspopup="dialog" tabindex="0">
         </div>
        <div class="container">
             <br>
@@ -471,7 +408,7 @@
 
     </section>
 
-<div class="case-study-modal" id="caseStudyModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="csTitle">
+<div class="case-study-modal" id="caseStudyModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="csTitle" aria-describedby="csDescription" tabindex="-1">
         <div class="cs-header">
             <div class="cs-title" id="csTitle">PROJECT NAME</div>
             <button type="button" class="cs-close" data-i18n="cs-close" aria-label="Close case study">CLOSE ✕</button>
@@ -506,7 +443,7 @@
         </div>
     </div>
 
-    <section class="tools-wrapper" id="tools">
+    <section class="tools-wrapper guide-section" id="tools">
         <div class="container">
             <h2 class="section-title" data-i18n="tools-title">TOOLS</h2>
             <p class="body-copy col-2-3 mb-0" data-i18n="tools-desc">Tools come and go, so I'm constantly exploring new tools to improve my work, but these are the ones that I use most often:</p>
@@ -516,13 +453,13 @@
         </div>
     </section>
 
-    <section class="experience" id="experience">
+    <section class="experience guide-section" id="experience">
         <div class="container">
             <h2 class="section-title" data-i18n="exp-title">EXPERIENCE</h2>
             <h3 class="brands-header" data-i18n="exp-brands">BRANDS</h3>
-            <p class="body-copy col-2-3 mb-1" data-i18n="exp-brands-desc">Here's a selection of brands I've had the oportunity of working with:</p>
+            <p class="body-copy col-2-3 mb-1" data-i18n="exp-brands-desc">Here's a selection of brands I've had the opportunity of working with:</p>
             <div class="brands-list col-2-3">
-                COCA-COLA • J&J • SONY • NUTELLA • PIZZA HUT • UBER • GOOGLE • VIVO • SOMPO • MERCADO LIVRE • PURAVIDA • GAMESCOM • OMELETE • CCXP • PORTO SEGURO
+                AJINOMOTO • BARILLA • CARREFOUR • CCXP • COCA-COLA • DECOLAR • GAMESCOM • GOOGLE • J&J • MASTERCARD • MERCADO LIVRE • MICHELIN • NUTELLA • OMELETE • PEPSICO • PIZZA HUT • PORTO SEGURO • PURAVIDA • SOMPO • SONY • TIROLEZ • TUPPERWARE • UBER • VIVO
             </div>
 
             <div class="timeline-item col-2-3">
@@ -551,7 +488,7 @@
         </div>
     </section>
 
-    <section class="honors-awards">
+    <section class="honors-awards guide-section">
         <div class="container">
             <h2 class="section-title" data-i18n="honors-title">HONORS<br>& AWARDS</h2>
             <p class="body-copy col-2-3 mb-4" data-i18n="honors-desc">Throughout my career, I've collaborated with highly talented creatives, exchanging knowledge and contributing to collaborative environments that led to award-winning work.</p>
@@ -569,7 +506,7 @@
                 <div class="award-year">2017</div>
                 <div class="award-details">
                     <h4>NAPSTER - THE ROCK'S DAY</h4>
-                    <span data-i18n="aw-2">At SapientNitro as an Art Director</span>
+                    <span data-i18n="aw-2">At SapientNitro as one of the Art Directors</span>
                     <p>Lusos Awards / Shotlist</p>
                 </div>
             </div>
@@ -631,13 +568,15 @@
     </main>
 
     <footer id="contact" role="contentinfo">
-        <div class="footer-block">
+        <div class="footer-block guide-section guide-section-dark">
             <div class="container">
                 <h2 class="footer-title" data-i18n="ft-title">GET IN TOUCH</h2>
                 <p class="body-copy col-2-3" data-i18n="ft-desc">All great relationships start with a conversation.<br>Do you have a project in mind and would like my help? Let's chat!</p>
                 
                 <form class="contact-form" id="contactForm" action="https://formspree.io/f/mpqkwbja" method="POST" aria-describedby="formStatus">
+                    <label class="sr-only" for="formEmail">Email address</label>
                     <input type="email" name="email" id="formEmail" placeholder="Your email" required aria-label="Email address">
+                    <label class="sr-only" for="formMsg">Message</label>
                     <textarea name="message" id="formMsg" placeholder="Your message" required aria-label="Message"></textarea>
                     
                     <div class="form-actions">
@@ -648,7 +587,7 @@
             </div>
         </div>
 
-        <div class="footer-block">
+        <div class="footer-block guide-section guide-section-dark">
             <div class="container footer-bottom-grid">
                 <div class="services-list">
                     <h3 data-i18n="ft-srv-title">SERVICES</h3>
@@ -664,19 +603,19 @@
                     <h3>SOCIALS</h3>
                     <div class="social-links">
                         <a href="https://vimeo.com/eduterrataca" target="_blank" rel="noreferrer noopener" class="social-item" aria-label="Visit Vimeo profile">
-                            <img src="images/icon-vimeo.png" alt="Vimeo logo">
+                            <img src="images/icon-vimeo.png" alt="Vimeo logo" loading="lazy" decoding="async">
                             Vimeo
                         </a>
                         <a href="https://www.linkedin.com/in/eduterrataca/" target="_blank" rel="noreferrer noopener" class="social-item" aria-label="Visit LinkedIn profile">
-                            <img src="images/icon-linkedin.png" alt="LinkedIn logo">
+                            <img src="images/icon-linkedin.png" alt="LinkedIn logo" loading="lazy" decoding="async">
                             LinkedIn
                         </a>
                         <a href="https://www.behance.net/eduterrataca" target="_blank" rel="noreferrer noopener" class="social-item" aria-label="Visit Behance profile">
-                            <img src="images/icon-behance.png" alt="Behance logo">
+                            <img src="images/icon-behance.png" alt="Behance logo" loading="lazy" decoding="async">
                             Behance
                         </a>
                         <a href="https://www.instagram.com/terra.work/" target="_blank" rel="noreferrer noopener" class="social-item" aria-label="Visit Instagram profile">
-                            <img src="images/icon-instagram.png" alt="Instagram logo">
+                            <img src="images/icon-instagram.png" alt="Instagram logo" loading="lazy" decoding="async">
                             Instagram
                         </a>
                     </div>
@@ -688,26 +627,21 @@
 
 <script>
         // ================= SISTEMA DE IDIOMAS (i18n) =================
-        let siteLang = 'en'; // Default
+        let siteLang = 'en';
         const userLang = navigator.language || navigator.userLanguage;
         if (userLang.toLowerCase().startsWith('pt')) {
             siteLang = 'pt';
         }
+        const savedLang = localStorage.getItem('terra-work-language');
+        if (savedLang === 'en' || savedLang === 'pt') siteLang = savedLang;
 
         const translations = {
             'pt': {
-                'menu-reel': 'Reel', 'menu-services': 'Serviços', 'menu-showcase': 'Portfólio', 'menu-experience': 'Experiência', 'menu-contact': 'Contato',
-                'hero-l1': 'MAIS DE',
-                'hero-l2': '<span class="mask"><span class="anim-word">20</span></span> <span class="mask"><span class="anim-word">ANOS</span></span>',
-                'hero-l3': '<span class="mask"><span class="anim-word">DANDO</span></span> <span class="mask"><span class="anim-word">VIDA</span></span>',
-                'hero-l4': 'A IDEIAS',
-                'hero-l5': 'E HISTÓRIAS',
-                'hero-l6': 'COM <span class="mask"><span class="anim-word">DESIGN</span></span>',
-                'hero-l7': 'E <span class="mask"><span class="anim-word">MOTION.</span></span>',
-                'btn-play': 'ASSISTIR REEL ▶',
-                'reel-notice': ' ',
+                'menu-reel': 'Reel', 'menu-services': 'Serviços', 'menu-showcase': 'Portfólio', 'menu-experience': 'Experiência', 'menu-contact': 'Contato', 'menu-toggle': 'MENU', 'skip-content': 'Pular para o conteúdo',
+                'btn-play': 'ASSISTA O REEL', 'aria-play-reel': 'Assistir o reel',
                 'what-desc': 'Olá, me chamo Eduardo Terrataca, sou um profissional criativo focado na criação de vídeos. Busco a excelência no craft, utilizando tecnologia e experiência para gastar menos tempo em tarefas repetitivas e mais tempo experimentando e criando.',
                 'what-title': 'O QUE EU FAÇO', 'what-sub': 'Trabalho com marcas, estúdios e agências, grandes e pequenos, em uma ampla gama de serviços de design, como:',
+                'ai-title': 'E IAS GENERATIVAS?', 'ai-desc': 'Estudo as IAs generativas desde 2022, comecei com modelos locais pesadas e miguei para modelos online em busca de rapidez e variedade.<br><br>Mas o fato é: a tecnologia muda, enquanto a direção criativa é permanente. Sem uma visão clara, a IA só gera aleatoriedades. É a curadoria, a intenção e a estratégia humana que trazem coesão, garantindo que cada entrega se alinhe à identidade da marca e à narrativa do projeto.',
                 'srv-art-title': 'DIREÇÃO DE ARTE', 'srv-art-desc': 'De rascunhos de conceito à execução estilística final em todos os pontos de contato.',
                 'srv-mot-title': 'MOTION DESIGN', 'srv-mot-desc': 'Criar movimento com propósito que comunica ideias instantaneamente.',
                 'srv-vid-title': 'EDIÇÃO DE VÍDEO', 'srv-vid-desc': 'Seleção de material, color grading, escolha de um ritmo de edição que se encaixe na história.',
@@ -726,86 +660,168 @@
                 'exp-3': 'Como parte de uma organização multinacional, colaborei com clientes internacionais criando em múltiplos formatos, do digital ao social, TV e OOH, protótipos de UX, campanhas e conteúdo para concorrências.',
                 'exp-4': 'Além das funções acima, também trabalhei com outros estúdios e agências. Comecei minha carreira como Diretor de Arte e gradualmente fiz a transição para o Motion Design, áreas que não fazem mais parte do meu foco atual.',
                 'honors-title': 'PRÊMIOS E<br>RECONHECIMENTOS', 'honors-desc': 'Ao longo da minha carreira, colaborei com criativos altamente talentosos, trocando conhecimentos e contribuindo para ambientes colaborativos que resultaram em trabalhos premiados.',
-                'aw-1': 'Associado a Daniel Portuga como Motion Designer', 'aw-2': 'Na SapientNitro como Diretor de Arte', 'aw-3': 'Na SapientNitro como Motion Designer.', 'aw-4': 'Na SapientNitro como Motion Designer.', 'aw-5': 'Na iThink como Motion Designer e Diretor de Arte.', 'aw-6': 'Na iThink como Motion Designer e Editor de Vídeo.', 'aw-7': 'Na iThink como Motion Designer e Diretor de Arte.', 'aw-8': 'Como Motion Designer, Diretor de Arte e Dev. Flash.',
+                'aw-1': 'Associado a Daniel Portuga como Motion Designer', 'aw-2': 'Na SapientNitro como um dos Diretores de Arte', 'aw-3': 'Na SapientNitro como Motion Designer.', 'aw-4': 'Na SapientNitro como Motion Designer.', 'aw-5': 'Na iThink como Motion Designer e Diretor de Arte.', 'aw-6': 'Na iThink como Motion Designer e Editor de Vídeo.', 'aw-7': 'Na iThink como Motion Designer e Diretor de Arte.', 'aw-8': 'Como Motion Designer, Diretor de Arte e Dev. Flash.',
                 'ft-title': 'VAMOS CONVERSAR', 'ft-desc': 'Todos os grandes relacionamentos começam com uma conversa.<br>Tem um projeto em mente e gostaria da minha ajuda? Me mande um alô!',
                 'ft-btn': 'ENVIAR', 'ft-srv-title': 'SERVIÇOS', 'ft-srv-1': 'Direção de Arte', 'ft-srv-2': 'Motion Design', 'ft-srv-3': 'Edição de Vídeo', 'ft-srv-4': 'Design 3D', 'ft-srv-5': 'Design de Som'
             }
         };
 
-        if (siteLang === 'pt') {
+        function applyLanguage() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations.pt[key]) el.innerHTML = translations.pt[key];
+                if (siteLang === 'pt' && translations.pt[key]) el.innerHTML = translations.pt[key];
+                if (siteLang === 'en' && el.dataset.defaultText) el.innerHTML = el.dataset.defaultText;
             });
-            document.getElementById('formEmail').placeholder = "Seu e-mail";
-            document.getElementById('formMsg').placeholder = "Sua mensagem";
+            document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+                const key = el.getAttribute('data-i18n-aria');
+                if (siteLang === 'pt' && translations.pt[key]) el.setAttribute('aria-label', translations.pt[key]);
+                if (siteLang === 'en' && el.dataset.defaultAria) el.setAttribute('aria-label', el.dataset.defaultAria);
+            });
+            document.getElementById('formEmail').placeholder = siteLang === 'pt' ? 'Seu e-mail' : 'Your email';
+            document.getElementById('formMsg').placeholder = siteLang === 'pt' ? 'Sua mensagem' : 'Your message';
+            document.documentElement.lang = siteLang;
+            const languageToggle = document.getElementById('languageToggle');
+            languageToggle.textContent = siteLang === 'pt' ? 'EN' : 'PT';
+            languageToggle.setAttribute('aria-label', siteLang === 'pt' ? 'Switch to English' : 'Mudar para português');
         }
-        document.documentElement.lang = siteLang;
 
+        document.querySelectorAll('[data-i18n]').forEach(el => { el.dataset.defaultText = el.innerHTML; });
+        document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.dataset.defaultAria = el.getAttribute('aria-label'); });
+        applyLanguage();
 
-        // ================= HERO, REEL E OUTROS =================
-        const words = document.querySelectorAll('.anim-word');
-        function animateRandomWord() {
-            if(words.length === 0) return;
-            const randomIdx = Math.floor(Math.random() * words.length);
-            const word = words[randomIdx];
-            word.classList.add('slide-up-out');
-            setTimeout(() => {
-                word.classList.remove('slide-up-out');
-                word.classList.add('slide-down-hidden');
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => { word.classList.remove('slide-down-hidden'); });
+        document.getElementById('languageToggle').addEventListener('click', () => {
+            siteLang = siteLang === 'pt' ? 'en' : 'pt';
+            localStorage.setItem('terra-work-language', siteLang);
+            mainNavigation.classList.remove('is-open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            applyLanguage();
+        });
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNavigation = document.getElementById('mainNavigation');
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mainNavigation.classList.toggle('is-open');
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+        mainNavigation.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mainNavigation.classList.remove('is-open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+        window.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                mainNavigation.classList.remove('is-open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                mainNavigation.classList.remove('is-open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        const revealTargets = document.querySelectorAll(
+            '.what-i-do > .container, .generative-ai-grid, .around-content, .showcase-section > .container, .tools-wrapper > .container, .experience > .container, .honors-awards > .container, footer .footer-block > .container'
+        );
+        revealTargets.forEach(element => element.classList.add('scroll-reveal'));
+
+        const animatedElements = document.querySelectorAll('.scroll-reveal, .scroll-stagger');
+        if ('IntersectionObserver' in window) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
                 });
-            }, 600);
-        }
-        setInterval(animateRandomWord, 2000);
+            }, { threshold: 0.14, rootMargin: '0px 0px -5% 0px' });
 
-        const reelModal = document.getElementById('videoModal');
-        const reelIframe = document.getElementById('reelVideo');
-        const reelUrl = "https://player.vimeo.com/video/1225761055?autoplay=1";
-        const playReelButton = document.querySelector('.play-reel-trigger');
+            animatedElements.forEach(element => revealObserver.observe(element));
+        } else {
+            animatedElements.forEach(element => element.classList.add('is-visible'));
+        }
+
+        const heroVideo = document.getElementById('heroVideo');
+        const heroPlayOverlay = document.getElementById('heroPlayOverlay');
+        const heroPlayButton = document.getElementById('heroPlayButton');
+        const generativeAiVideo = document.getElementById('generativeAiVideo');
+        let heroVideoStarted = false;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function sendVimeoCommand(iframe, method) {
+            if (!iframe || !iframe.contentWindow) return;
+            iframe.contentWindow.postMessage(JSON.stringify({ method }), 'https://player.vimeo.com');
+        }
+
+        if (heroVideo && heroPlayOverlay && heroPlayButton) {
+            const startHeroVideo = () => {
+                const videoUrl = new URL(heroVideo.src);
+                videoUrl.searchParams.set('autoplay', '1');
+                videoUrl.searchParams.set('muted', '0');
+                heroVideo.src = videoUrl.toString();
+                heroVideoStarted = true;
+                heroPlayOverlay.remove();
+            };
+
+            heroPlayOverlay.addEventListener('click', startHeroVideo);
+        }
+
+        if ('IntersectionObserver' in window) {
+            const videoObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.target === heroVideo && !entry.isIntersecting && heroVideoStarted) {
+                        sendVimeoCommand(heroVideo, 'pause');
+                    }
+                    if (entry.target === generativeAiVideo) {
+                        const method = entry.isIntersecting && !prefersReducedMotion ? 'play' : 'pause';
+                        sendVimeoCommand(generativeAiVideo, method);
+                    }
+                });
+            }, { threshold: 0.35 });
+
+            if (heroVideo) videoObserver.observe(heroVideo);
+            if (generativeAiVideo) videoObserver.observe(generativeAiVideo);
+        }
+
+        if (generativeAiVideo) {
+            generativeAiVideo.addEventListener('load', () => {
+                const bounds = generativeAiVideo.getBoundingClientRect();
+                const isVisible = bounds.top < window.innerHeight * 0.65 && bounds.bottom > window.innerHeight * 0.35;
+                if (isVisible && !prefersReducedMotion) sendVimeoCommand(generativeAiVideo, 'play');
+            });
+        }
+
+        const caseStudyModal = document.getElementById('caseStudyModal');
+        let lastFocusedElement = null;
         const caseStudyCloseButton = document.querySelector('#caseStudyModal .cs-close');
-        const reelCloseButton = document.querySelector('#videoModal .cs-close');
-
-        function openModal() {
-            reelModal.classList.add('active');
-            reelModal.setAttribute('aria-hidden', 'false');
-            reelIframe.src = reelUrl;
-            // Focus trap
-            const focusableElements = reelModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-            if (focusableElements.length) focusableElements[0].focus();
-        }
-
-        function closeModal() {
-            reelModal.classList.remove('active');
-            reelModal.setAttribute('aria-hidden', 'true');
-            reelIframe.src = "";
-            playReelButton.focus(); // Return focus
-        }
-
-        function closeActiveModals() {
-            if (reelModal.classList.contains('active')) closeModal();
-            if (caseStudyModal.classList.contains('active')) closeCaseStudy();
-        }
-
-        if (playReelButton) {
-            playReelButton.addEventListener('click', openModal);
-        }
 
         if (caseStudyCloseButton) {
             caseStudyCloseButton.addEventListener('click', closeCaseStudy);
         }
 
-        if (reelCloseButton) {
-            reelCloseButton.addEventListener('click', closeModal);
-        }
-
-        window.addEventListener('click', (event) => {
-            if (event.target === reelModal) closeModal();
+        caseStudyModal.addEventListener('click', event => {
+            if (event.target === caseStudyModal) closeCaseStudy();
         });
 
         window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') closeActiveModals();
+            if (!caseStudyModal.classList.contains('active')) return;
+            if (event.key === 'Escape') {
+                closeCaseStudy();
+                return;
+            }
+            if (event.key !== 'Tab') return;
+            const focusableElements = [...caseStudyModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')];
+            if (!focusableElements.length) return;
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            if (event.shiftKey && document.activeElement === firstElement) {
+                event.preventDefault();
+                lastElement.focus();
+            } else if (!event.shiftKey && document.activeElement === lastElement) {
+                event.preventDefault();
+                firstElement.focus();
+            }
         });
 
         const showcaseItems = document.querySelectorAll('.showcase-item');
@@ -823,39 +839,38 @@
         let currentIndex = 0;
         function getCardsVisible() { return window.innerWidth >= 1440 ? 5 : window.innerWidth >= 1024 ? 3 : 1; }
         function moveCarousel(direction) {
-        const cardsVisible = getCardsVisible();
-        const maxIndex = 5 - cardsVisible; // total de cards
-        currentIndex += direction;
-        // LOOPING ---
-        if (currentIndex < 0) {
-         currentIndex = maxIndex; // Se tentar voltar antes do primeiro card, pula lá pro último
-         } else if (currentIndex > maxIndex) {
-         currentIndex = 0; // Se passou do último card, volta pro primeiro (início)
+            const cardsVisible = getCardsVisible();
+            const maxIndex = 5 - cardsVisible;
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex > maxIndex) currentIndex = maxIndex;
+            const cardWidth = track.children[0].getBoundingClientRect().width;
+            track.style.transform = `translateX(-${currentIndex * (cardWidth + 32)}px)`;
         }
-        const cardWidth = track.children[0].getBoundingClientRect().width;
-        track.style.transform = `translateX(-${currentIndex * (cardWidth + 32)}px)`;
-        }
-
 
         const carouselControlButtons = document.querySelectorAll('.control-btn[data-carousel]');
         carouselControlButtons.forEach(button => {
             button.addEventListener('click', () => moveCarousel(Number(button.dataset.carousel)));
         });
 
-        // Auto-play do carousel
-        setInterval(() => {
-            moveCarousel(1);
-        }, 5000); // Muda a cada 5 segundos
+        const carouselWrapper = document.querySelector('.carousel-wrapper');
+        let carouselPaused = false;
+        if (carouselWrapper) {
+            carouselWrapper.addEventListener('mouseenter', () => { carouselPaused = true; });
+            carouselWrapper.addEventListener('mouseleave', () => { carouselPaused = false; });
+            carouselWrapper.addEventListener('focusin', () => { carouselPaused = true; });
+            carouselWrapper.addEventListener('focusout', () => { carouselPaused = false; });
+        }
+        document.addEventListener('visibilitychange', () => {
+            carouselPaused = document.hidden;
+        });
 
-        // PARALAXE HERO
-        window.addEventListener('scroll', () => {
-         const bg = document.querySelector('.hero-bg');
-         if (bg) {
-           let scrollValue = window.scrollY;
-          // Mantemos o translate(-50%, -50%) para centralizar junto com o parallax
-         bg.style.transform = `translate(-50%, calc(-50% + ${scrollValue * 0.2}px)) scale(1)`;
-    }
-});
+        setInterval(() => {
+            if (carouselPaused) return;
+            const maxIndex = Math.max(0, 5 - getCardsVisible());
+            if (currentIndex >= maxIndex) currentIndex = -1;
+            moveCarousel(1);
+        }, 5000);
 
         // FORMULÁRIO AJAX
         const statusMessages = {
@@ -866,6 +881,10 @@
         const formStatus = document.getElementById('formStatus');
         contactForm.addEventListener('submit', async function(event) {
             event.preventDefault();
+            if (!contactForm.checkValidity()) {
+                contactForm.reportValidity();
+                return;
+            }
             const data = new FormData(event.target);
             formStatus.innerText = statusMessages[siteLang].sending;
             try {
@@ -1277,59 +1296,56 @@
             }
         };
 
-
-
-        const caseStudyModal = document.getElementById('caseStudyModal');
-        
         function openCaseStudy(projectId) {
-         const data = projectsData[projectId];
-         if (!data) return; 
+            const data = projectsData[projectId];
+            if (!data) return; 
 
-         // Removemos o scrollTop = 0 daqui!
-
-         document.getElementById('csTitle').innerText = data.title[siteLang];
-         document.getElementById('csClient').innerText = data.client[siteLang];
-         document.getElementById('csRole').innerText = data.role[siteLang];
-         document.getElementById('csTools').innerText = data.tools[siteLang];
-         document.getElementById('csDescription').innerHTML = data.description[siteLang];
-    
-         const videoContainer = document.getElementById('csVideoContainer');
-         const videoIframe = document.getElementById('csVideo');
+            lastFocusedElement = document.activeElement;
+            caseStudyModal.scrollTop = 0;
+            document.getElementById('csTitle').innerText = data.title[siteLang];
+            document.getElementById('csClient').innerText = data.client[siteLang];
+            document.getElementById('csRole').innerText = data.role[siteLang];
+            document.getElementById('csTools').innerText = data.tools[siteLang];
+            document.getElementById('csDescription').innerHTML = data.description[siteLang];
+            document.querySelectorAll('#csDescription img, #csDescription video').forEach(media => {
+                media.loading = 'lazy';
+                media.decoding = 'async';
+            });
+            
+            const videoContainer = document.getElementById('csVideoContainer');
+            const videoIframe = document.getElementById('csVideo');
             if (data.videoUrl && data.videoUrl.trim() !== '') {
-            videoContainer.style.display = 'block'; 
-            videoIframe.src = data.videoUrl;
+                videoContainer.style.display = 'block'; 
+                videoIframe.src = data.videoUrl;
             } else {
-            videoContainer.style.display = 'none'; 
-            videoIframe.src = '';
-        }
-        
-        const galleryDiv = document.getElementById('csGallery');
-        galleryDiv.innerHTML = ''; 
-        data.gallery.forEach(imgSrc => {
-        const img = document.createElement('img');
-        img.src = imgSrc;
-        galleryDiv.appendChild(img);
-         });
-
-         // 1. Primeiro tornamos o modal visível (isso remove o display: none)
-         caseStudyModal.classList.add('active');
-           caseStudyModal.setAttribute('aria-hidden', 'false');
-          document.body.classList.add('modal-open');
-
-          // 2. AGORA SIM resetamos o scroll para o topo, pois o elemento já tem altura calculada
-        caseStudyModal.scrollTop = 0;
-
-          // Focus trap
-         const focusableElements = caseStudyModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-         if (focusableElements.length) focusableElements[0].focus();
+                videoContainer.style.display = 'none'; 
+                videoIframe.src = '';
             }
+            
+            const galleryDiv = document.getElementById('csGallery');
+            galleryDiv.innerHTML = ''; 
+            data.gallery.forEach(imgSrc => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                galleryDiv.appendChild(img);
+            });
+
+            caseStudyModal.classList.add('active');
+            caseStudyModal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
+            // Focus trap
+            const focusableElements = caseStudyModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (focusableElements.length) focusableElements[0].focus();
+        }
 
         function closeCaseStudy() {
             caseStudyModal.classList.remove('active');
             caseStudyModal.setAttribute('aria-hidden', 'true');
             document.body.classList.remove('modal-open');
             setTimeout(() => { document.getElementById('csVideo').src = ""; }, 400);
-            // Return focus to the triggering element if possible
+            if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
         }
 
 
